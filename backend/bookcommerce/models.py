@@ -18,7 +18,7 @@ class Address(models.Model):
 
 class Customer(AbstractUser):
     email = models.EmailField(max_length=100, unique=True)
-    address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True, blank=True)
+    address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=True, db_constraint=False)
     
     # related_name to avoid clashes with default User model
     groups = models.ManyToManyField('auth.Group', related_name='customers')

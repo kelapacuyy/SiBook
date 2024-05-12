@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiBook</title>
+</head>
+
+<body>
+    <nav>
+        
+        <div class="navbarleft">
+            <a class="logo" href="{% url 'home' %}">SiBook</a>
+            <div class="menunavbar">
+                <li><a href="#">My Order</a></li>
+            </div>
+        </div>
+        
+        <div class="navbarright">
+            
+            {% if user.is_authenticated %}
+                <div class="profilepic">
+                    <img src="#">
+                </div>
+                <form action="{% url 'logout' %}" method="POST">
+                  {% csrf_token %}
+                  <button type="submit">Logout</button>
+                </form>
+            {% else %}
+                <div class="loginregister">
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'register' %}">Register</a></li>
+                </div>
+            {% endif %}
+
+        </div>
+    </nav>
+
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{message.tags}}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %} {% endblock %}
+    </div>
+    
+</body>
+</html>

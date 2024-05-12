@@ -1,0 +1,16 @@
+{% extends "bookcommerce/base.html" %}
+{% block content %}
+    {% for book in books %}
+        <article>
+          <div>
+            <img src="{{ book.cover_img.url }}" style="max-width:100px">
+            <h2><a href="{% url 'bookcommerce-book-detail' book.id %}">{{ book.title }}</a></h2>
+            <a href="#">{{ book.author }}</a>
+            <b>{{ book.price }}</b>
+          </div>
+          <button>Masukkan ke keranjang</button>
+        </article>
+    {% empty %}
+    	<h1>Tidak ada buku yang sedang dijual</h1>
+    {% endfor %}
+{% endblock content %}

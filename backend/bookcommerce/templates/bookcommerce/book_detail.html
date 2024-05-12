@@ -1,0 +1,39 @@
+{% extends "bookcommerce/base.html" %}
+{% block content %}
+
+    <div>
+        <div>
+            <h1>{{book.title}}</h1>
+            <img src="{{ book.cover_img.url }}" style="max-width:100px">
+            <p>{{book.author}}</p>
+            <pre>4,5 stars<pre>
+            <b>{{book.price}}</b>
+
+            <h3>Detail Buku</h3>
+            <ul>
+                <li>Series: {{book.series}}</li>
+                <li>Kategori: {{book.isbn}}</li>
+                <li>Genre: {{book.genres}}</li>
+                <li>Bahasa: {{book.language}}</li>
+                <li>Tipe Sampul: {{book.cover_type}}</li>
+                <li>Halaman: {{book.pages}}</li>
+                <li>Penerbit: {{book.publisher}}</li>
+                <li>Tanggal Terbit: {{book.publish_date}}</li>
+                <li>Berat: {{book.weight}}</li>
+                <li>Panjang: {{book.length}}</li>
+                <li>Lebar: {{book.width}}</li>
+            </ul>
+            <span><button>(-)</button>1<button>(+)</button></span>
+            <button>Masukkan ke Keranjang</button> <button>Beli Sekarang</button>
+
+            <div>
+                <h3>Deskripsi Buku</h3>
+                <p>{{book.description}}</p>
+            </div>
+        </div>
+    </div>
+
+    <h3>Ulasan dan Penilaian</h3>
+    <p>Coming soon...</p>
+
+{% endblock content %}

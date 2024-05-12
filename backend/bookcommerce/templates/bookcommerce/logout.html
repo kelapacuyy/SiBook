@@ -1,0 +1,10 @@
+{% extends "bookcommerce/base.html" %}
+
+{% block content %}
+    <div>
+        <h3>Anda sudah log out</h3>
+        <small>
+            <a href="{% url 'login' %}">Log in lagi?</a>
+        </small>
+    </div>
+{% endblock content %}
