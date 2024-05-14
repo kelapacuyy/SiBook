@@ -1,0 +1,112 @@
+.App {
+  text-align: center;
+}
+
+section {
+  padding-top: 126px;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 500;
+  padding: 10px;
+  padding-bottom: 0px;
+  padding-top: 20px;
+  margin-bottom: 10px;
+  color: rgb(148, 143, 115);
+}
+
+.button {
+  background-color: rgb(55, 87, 87);
+  height: 50px;
+  color: white;
+}
+
+.title-container p, .item-title,
+.product-title, 
+.profile .name, blockquote::before, blockquote::after, 
+#contact-title, #company-title, .link {
+  color: rgb(55, 87, 87);
+}
+
+.item-author,
+#home-text, #shop-link,
+.about-section-text,
+.option-picker p, #products select, #products select option, .product-author, 
+.customer-info p, blockquote{
+  color: rgba(55, 87, 87, 0.555);
+}
+
+.google-button p,
+.buttons-container img,
+.menu-item, .side-menu-item, #hamburger-menu-icon,
+#shop-link, #products, .cart-div, .cart-button p, .cart-button img, .heart-icon,
+#submit-button, 
+.footer-contact-link img, .footer-contact-link p, .footer-social-link {
+  -webkit-transition: all 0.4s ease;
+  -moz-transition: all 0.4s ease;
+  -o-transition: all 0.4s ease;
+  -ms-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+}
+
+.menu-item, .side-menu-item {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.695);
+  font-size: 17px;
+}
+
+.menu-item:hover, .side-menu-item:hover {
+  color: white;
+}
+
+.info-div, .google-button,
+.item,
+#page-header, #menu-div, #menu-items-div, #search-div, 
+.tag-div, 
+.about-section,
+#category-div, #sorting-view-div, #sorting-div, #view-div,  .button, 
+.rating,
+#contact-info-div, #company-info-div, .contact-link, #socials-div,
+.footer-contact-link {
+  display: flex;
+  flex-direction: row;
+}
+
+.form-container, .checkout-form-container,
+.items-container, .item-info-container,
+#side-menu, #side-menu-items-div, 
+.about-section-info, 
+.product-info, 
+#message-form, #phone-mail-div {
+  display: flex;
+  flex-direction: column;
+}
+
+.checkout-form-row,
+.rating-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.buttons-container img,
+.menu-item, .side-menu-item,
+.icon-menu-item, #hamburger-menu-icon,
+.heart-icon,
+#submit-button, .link,
+#footer-contact p, .footer-social-link,
+.button {
+  cursor: pointer;
+}
+
+.modal-bg, .info-div, .google-button, .google-button p, #empty-cart-div {
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (max-width: 440px) {
+  .section-title {
+    font-size: 1.9rem;
+  }
+}
+

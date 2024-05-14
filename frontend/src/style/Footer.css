@@ -1,0 +1,79 @@
+#footer {
+  background-color: #F6F6F6;
+  padding-top: 40px;
+}
+
+#footer-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-gap: 2rem;
+  justify-content: center;
+  padding-left: 160px;
+  padding-right: 100px;
+  padding-bottom: 25px;
+}
+
+#footer-line {
+  height: 0; /* Pastikan elemen tidak memiliki tinggi */
+  border-top: 2px solid #0066A2; /* Atur border atas sebagai garis */
+}
+
+#footer-contact {
+  padding-top: 20px;
+}
+
+.footer-contact-link img {
+  height: 40px;
+}
+
+.footer-contact-link p {
+  text-align: left;
+  padding-left: 22px;
+  padding-top: 9px;
+}
+
+#footer-info p {
+  color: #000000;
+}
+
+#footer-title {
+  text-align: left;
+  padding-left: 20px;
+  padding-top: 9px;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+#footer-company-info p {
+  opacity: 86%;
+}
+
+#company-text {
+  font-size: 15px;
+}
+
+#footer-socials {
+  margin: auto;
+}
+
+.footer-social-link {
+  height: 35px;
+  margin: 10px;
+}
+
+#copyright {
+  background-color: #0066A2;
+  color: #FFFFFF;
+  padding-top: 25px;
+  padding-bottom: 20px;
+  margin-bottom: 0px;
+  font-size: 14px;
+}
+
+.footer-contact-link img, .footer-contact-link p, .footer-social-link {
+  opacity: 80%;
+}
+
+.footer-contact-link:hover img, .footer-contact-link:hover p, .footer-social-link:hover {
+  opacity: 100%;
+}

@@ -1,0 +1,31 @@
+.news-slider {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+
+@media screen and (max-width: 850px) {
+  #banner {
+    transition: 0s;
+    visibility: hidden;
+    height: 0px;
+  }
+}
+
+@media screen and (min-width: 850px) {
+  #vertical-banner {
+    height: 0px;
+    transition: 0s;
+    visibility: hidden;
+  }
+}
+
+
+@media screen and (max-width: 583px) {
+  #tags {
+    column-gap: 4px;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
