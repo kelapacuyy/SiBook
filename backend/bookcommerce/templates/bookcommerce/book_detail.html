@@ -13,7 +13,7 @@
             <ul>
                 <li>Series: {{book.series}}</li>
                 <li>Kategori: {{book.isbn}}</li>
-                <li>Genre: {{book.genres}}</li>
+                <li>Genre: {% for genre in book.genres.all %}{{ genre.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</li>
                 <li>Bahasa: {{book.language}}</li>
                 <li>Tipe Sampul: {{book.cover_type}}</li>
                 <li>Halaman: {{book.pages}}</li>
