@@ -1,4 +1,4 @@
- "# Project Team
+# Project Team
 
 | Nama                      | Job Desk               |
 |---------------------------|------------------------|
@@ -6,4 +6,3 @@
 | Eva Fitriyaningsih        | UI/UX                  |
 | Annisa Nur Rahmadhani     | Front End Engineer     |
 | Muhammad Ghiffar          | Back End Engineer      |
-"
