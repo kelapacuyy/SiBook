@@ -12,9 +12,6 @@
         
         <div class="navbarleft">
             <a class="logo" href="{% url 'home' %}">SiBook</a>
-            <div class="menunavbar">
-                <li><a href="#">My Order</a></li>
-            </div>
         </div>
         
         <div class="navbarright">
@@ -22,6 +19,11 @@
             {% if user.is_authenticated %}
                 <div class="profilepic">
                     <img src="#">
+                </div>
+                <div class="orders">
+                    <li><a href="#">My Orders</a></li>
+                    <li><a href="#">My Cart</a></li>
+                    <li>Items in cart: </li>
                 </div>
                 <form action="{% url 'logout' %}" method="POST">
                   {% csrf_token %}

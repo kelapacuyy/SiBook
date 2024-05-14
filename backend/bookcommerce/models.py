@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-
+# User-related models
 class Address(models.Model):
 	label = models.CharField(max_length=100)
 	receiver_name = models.CharField(max_length=100)
@@ -27,6 +27,7 @@ class Customer(AbstractUser):
     def __str__(self):
         return self.username
 
+# Book related models
 class Series(models.Model):
 	name = models.CharField(max_length=150)
 
@@ -72,3 +73,43 @@ class Book(models.Model):
 
 	def __str__(self):
 		return self.title
+
+# Order related models
+class Cart(models.Model):
+    customer = models.OneToOneField(Customer, on_delete=models.CASCADE)
+    books = models.ManyToManyField(Book, through='CartItem')
+
+    def __str__(self):
+        return f"Cart {self.id} - {self.customer.username}"
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return f"CartItem {self.id} - {self.cart.customer.username} - {self.book.title}"
+
+ORDER_STATUS_CHOICES = (
+    ('Pending', 'Menunggu pembayaran'),
+    ('Paid', 'Menunggu konfirmasi'),
+    ('Shipping', 'Sedang dikirim'),
+    ('Completed', 'Pesanan Selesai'),
+)
+
+class Order(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    books = models.ManyToManyField(Book, through='OrderItem')
+    order_date = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=50, choices=ORDER_STATUS_CHOICES, default='Pending')
+
+    def __str__(self):
+        return f"Order {self.id} - {self.customer.username}"
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return f"OrderItem {self.id} - {self.order.customer.username} - {self.book.title}"
