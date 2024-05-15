@@ -88,7 +88,7 @@ class CartItem(models.Model):
     quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
-        return f"CartItem {self.id} - {self.cart.customer.username} - {self.book.title}"
+        return f"{self.quantity} of {self.book.title}"
 
 ORDER_STATUS_CHOICES = (
     ('Pending', 'Menunggu pembayaran'),
@@ -112,4 +112,4 @@ class OrderItem(models.Model):
     quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
-        return f"OrderItem {self.id} - {self.order.customer.username} - {self.book.title}"
+        return f"{self.quantity} of {self.book.title}"
