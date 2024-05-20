@@ -1,9 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, View, CreateView, UpdateView, DeleteView
 from django.contrib import messages
 from django.contrib.auth.views import LoginView
-from django.urls import reverse_lazy
-from .models import Book
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse, reverse_lazy
+from django.http import HttpResponseRedirect
+from .models import Book, Cart, CartItem
 from .forms import UserRegisterForm
 
 def register(request):
@@ -41,3 +43,26 @@ class BookDetailView(View):
         }
 
         return render(request, 'bookcommerce/book_detail.html', context)
+
+@login_required
+def add_to_cart(request, book_id):
+    if request.method == 'POST':
+        book = get_object_or_404(Book, id=book_id)
+        quantity = int(request.POST.get('quantity', 1))  # Default to 1 if not provided
+        cart, created = Cart.objects.get_or_create(customer=request.user)
+        cart_item, created = CartItem.objects.get_or_create(cart=cart, book=book)
+        if not created:
+            cart_item.quantity += quantity
+            cart_item.save()
+        else:
+            cart_item.quantity = quantity
+            cart_item.save()
+        messages.success(request, f"Berhasil menambahkan {quantity} {book.title}(s) ke dalam keranjang!")
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', reverse('home')))
+    else:
+        return HttpResponseRedirect(reverse('home'))  # Redirect if not a POST request
+
+@login_required
+def cart_detail(request):
+    cart, created = Cart.objects.get_or_create(customer=request.user)
+    return render(request, 'bookcommerce/cart_detail.html', {'cart': cart})
