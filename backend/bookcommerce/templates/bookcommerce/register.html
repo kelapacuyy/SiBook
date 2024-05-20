@@ -1,12 +1,18 @@
 {% extends "bookcommerce/base.html" %}
 
+{% load static %}
+
 {% block content %}
+    <link rel="stylesheet" href="{% static 'bookcommerce/register.css' %}">
     <div>
-        <h1>Register</h1>
-        <div>
+        <div id='logo'>
+            <img src="{% static '/bookcommerce/assets/logo_vertikal.svg' %}" alt="logo vertikal">
+        </div>
+        <div id="regist-container">
+            <h1>DAFTAR</h1>
             <form method="POST">
                 {% csrf_token %}
-                {{ form }}
+                {{ form.as_p }}
                 <button type="submit">Register</button>
             </form>
             <p>Already Have an Account? <a href="{% url 'login' %}">Login</a></p>

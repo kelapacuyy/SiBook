@@ -1,9 +1,12 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'bookcommerce/base.css' %}">
     <title>SiBook</title>
 </head>
 
@@ -11,7 +14,7 @@
     <nav>
         
         <div class="navbarleft">
-            <a class="logo" href="{% url 'home' %}">SiBook</a>
+            <a class="logo" href="{% url 'home' %}"><img src="{% static '/bookcommerce/assets/logo_horizontal.svg' %}" alt="logo"></a>
         </div>
         
         <div class="navbarright">
@@ -21,8 +24,7 @@
                     <img src="#">
                 </div>
                 <div class="orders">
-                    <li><a href="#">My Orders</a></li>
-                    <li><a href="#">My Cart</a></li>
+                    <li><a href="#"><img src="{% static '/bookcommerce/assets/cart_biru.svg' %}" alt="cart"></a></li>
                     <li>Items in cart: </li>
                 </div>
                 <form action="{% url 'logout' %}" method="POST">
@@ -31,8 +33,8 @@
                 </form>
             {% else %}
                 <div class="loginregister">
-                    <li><a href="{% url 'login' %}">Login</a></li>
-                    <li><a href="{% url 'register' %}">Register</a></li>
+                    <a href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'register' %}">Register</a>
                 </div>
             {% endif %}
 
