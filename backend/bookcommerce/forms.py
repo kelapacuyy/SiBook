@@ -11,10 +11,11 @@ class UserRegisterForm(UserCreationForm):
         self.fields['email'].widget.attrs['placeholder'] = 'Masukkan alamat email'
         self.fields['password1'].widget.attrs['placeholder'] = 'Masukkan password'
         self.fields['password2'].widget.attrs['placeholder'] = 'Masukkan ulang password'
-        self.fields['username'].label = False
-        self.fields['email'].label = False
-        self.fields['password1'].label = False
-        self.fields['password2'].label = False
+        self.fields['username'].label = 'Username:'
+        self.fields['email'].label = 'Email:'
+        self.fields['password1'].label = 'Password:'
+        self.fields['password2'].label = 'Masukkan ulang password:'
+        self.fields['username'].help_text = None
     
     password1 = forms.CharField(widget=forms.PasswordInput, help_text='')
     password2 = forms.CharField(widget=forms.PasswordInput, help_text='')

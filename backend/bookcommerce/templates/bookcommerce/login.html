@@ -1,17 +1,23 @@
 {% extends "bookcommerce/base.html" %}
 
+{% load static %}
+
 {% block content %}
+    <link rel="stylesheet" href="{% static 'bookcommerce/login.css' %}">
     <div>
-        <h1>Login</h1>
-        <div>
-            <form method="POST">
+        <div id='logo'>
+            <img src="{% static '/bookcommerce/assets/logo_vertikal.svg' %}" alt="logo vertikal">
+        </div>
+        <div id="login-container">
+            <h1 class="h1">LOGIN</h1>
+            <form method="POST" name="loginform">
                 {% csrf_token %}
-                {{ form }}
+                {{ form.as_p }}
                 <button type="submit">Login</button>
                 <div>
-                    <p><a href="#">Lupa Password?</a></p>
+                    <p class="forget-pass"><a href="#">Lupa Password?</a></p>
                 </div>
-                <p class="message-bottom">Tidak punya akun? <a href="{% url 'register' %}">Register</a></p>
+                <p class="message-register">Belum punya akun? <a href="{% url 'register' %}">Daftar</a></p>
             </form>
         </div>
     </div>
