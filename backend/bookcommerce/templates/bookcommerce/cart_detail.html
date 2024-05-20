@@ -1,11 +1,39 @@
 {% extends "bookcommerce/base.html" %}
 {% block content %}
     <h1>Your Cart</h1>
+    
+    <div style="text-align: right;">
+        <form action="{% url 'delete_all_cart_items' %}" method="POST">
+            {% csrf_token %}
+            <button type="submit">Delete All</button>
+        </form>
+    </div>
+
     <ul>
-        {% for item in cart.items.all %}
-            <li>{{ item.book.title }} ({{ item.quantity }})</li>
+        {% for item in cart_items %}
+            <li>
+                <b>{{ item.book.title }}</b>
+                <p>Price: {{ item.book.price }}</p>
+                <form action="{% url 'update_cart_item' item.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" name="action" value="decrease">-</button>
+                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
+                    <button type="submit" name="action" value="increase">+</button>
+                </form>
+                <form action="{% url 'delete_cart_item' item.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
         {% empty %}
             <li>Your cart is empty.</li>
         {% endfor %}
     </ul>
+
+    <h2>Total Price: {{ total_price }}</h2>
+
+    <form action="#" method="POST">
+        {% csrf_token %}
+        <button type="submit">Checkout</button>
+    </form>
 {% endblock content %}
