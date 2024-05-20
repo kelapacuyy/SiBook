@@ -23,8 +23,13 @@
                 <li>Panjang: {{book.length}}</li>
                 <li>Lebar: {{book.width}}</li>
             </ul>
-            <span><button>(-)</button>1<button>(+)</button></span>
-            <button>Masukkan ke Keranjang</button> <button>Beli Sekarang</button>
+            
+            <form action="{% url 'add_to_cart' book.id %}" method="POST">
+                {% csrf_token %}
+                <input type="number" name="quantity" value="1" min="1">
+                <button type="submit">Masukkan ke Keranjang</button>
+            </form>
+            <button>Beli Sekarang</button>
 
             <div>
                 <h3>Deskripsi Buku</h3>

@@ -22,8 +22,8 @@
                 </div>
                 <div class="orders">
                     <li><a href="#">My Orders</a></li>
-                    <li><a href="#">My Cart</a></li>
-                    <li>Items in cart: </li>
+                    <li><a href="{% url 'cart_detail' %}">My Cart</a></li>
+                    <li>Items in cart: {{ request.user.cart.items.count }}</li>
                 </div>
                 <form action="{% url 'logout' %}" method="POST">
                   {% csrf_token %}
