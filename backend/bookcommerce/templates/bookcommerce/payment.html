@@ -1,0 +1,23 @@
+{% extends "bookcommerce/base.html" %}
+{% block content %}
+    <h1>Pembayaran</h1>
+
+    <p>Alamat Pengiriman: {{ request.user.address.full_address }}</p>
+    <p>Kurir: {{ shipment }}</p>
+    <p>Metode Pembayaran: {{ payment }}</p>
+    <h2>Order Summary</h2>
+    <ul>
+        {% if book %}
+            <li>{{ book.title }} - 1 x {{ book.price }}</li>
+            <p>Total harga: {{ book.price }}</p>
+        {% else %}
+            {% for item in order_items %}
+                <li>{{ item.book.title }} - {{ item.quantity }} x {{ item.book.price }}</li>
+            {% endfor %}
+            <p>Total harga: {{ total_price }}</p>
+        {% endif %}
+    </ul>
+
+    <h3>Mohon lakukan pembayaran</h3>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "bookcommerce/base.html" %}
+{% block content %}
+    <h1>Checkout</h1>
+
+    <form action="{% url 'payment' %}" method="POST">
+        {% csrf_token %}
+        {% if not request.user.address %}
+            <button type="button" onclick="location.href='#'">Tambah Alamat</button>
+        {% else %}
+            <p>{{ request.user.address.full_address }}</p>
+            <button type="button" onclick="location.href='#'">Edit Alamat</button>
+        {% endif %}
+        <input type="hidden" name="address" value="{{ request.user.address.id }}">
+
+        <h2>Kurir</h2>
+        <select name="shipment" required>
+            {% for shipment in shipments %}
+                <option value="{{ shipment.id }}">{{ shipment.name }} - {{ shipment.price }} ({{ shipment.eta }} hari)</option>
+            {% endfor %}
+        </select>
+
+        <h2>Metode Pembayaran</h2>
+        <select name="payment" required>
+            {% for payment in payments %}
+                <option value="{{ payment.id }}">{{ payment.name }}</option>
+            {% endfor %}
+        </select>
+
+        <h2>Order Summary</h2>
+        <ul>
+            {% if book %}
+                <li>{{ book.title }} - 1 x {{ book.price }}</li>
+                <input type="hidden" name="book_id" value="{{ book.id }}">
+                <p>Total harga: {{ book.price }}</p>
+            {% else %}
+                {% for item in cart_items %}
+                    <li>{{ item.book.title }} - {{ item.quantity }} x {{ item.book.price }}</li>
+                {% endfor %}
+                <p>Total harga: {{ total_price }}</p>
+            {% endif %}
+        </ul>
+
+        <button type="submit">Bayar</button>
+    </form>
+{% endblock %}

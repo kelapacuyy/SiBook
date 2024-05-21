@@ -1,0 +1,29 @@
+{% extends "bookcommerce/base.html" %}
+{% block content %}
+<h1>Profile</h1>
+
+<div>
+    <img src="{{ user.profile_picture.url }}" alt="Profile Picture" style="max-width:150px;">
+    <h2>{{ user.username }}</h2>
+</div>
+
+<div>
+    <h3>Profile Information</h3>
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Address:</strong> {{ user.address.full_address if user.address else "No address provided" }}</p>
+    <button onclick="location.href='#'">Edit Address</button>
+</div>
+
+<div>
+    <button onclick="location.href='{% url 'change_password' %}'">Change Password</button>
+</div>
+
+<div>
+    <button onclick="location.href='{% url 'order_history' %}'">Order History</button>
+</div>
+
+<div>
+    <button onclick="location.href='{% url 'logout' %}'">Logout</button>
+</div>
+{% endblock %}
