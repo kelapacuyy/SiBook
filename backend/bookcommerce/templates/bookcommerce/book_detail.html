@@ -29,7 +29,12 @@
                 <input type="number" name="quantity" value="1" min="1">
                 <button type="submit">Masukkan ke Keranjang</button>
             </form>
-            <button>Beli Sekarang</button>
+
+            <form action="{% url 'checkout' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="book_id" value="{{ book.id }}">
+                <button type="submit">Beli sekarang</button>
+            </form>
 
             <div>
                 <h3>Deskripsi Buku</h3>
@@ -41,4 +46,4 @@
     <h3>Ulasan dan Penilaian</h3>
     <p>Coming soon...</p>
 
-{% endblock content %}
+{% endblock %}

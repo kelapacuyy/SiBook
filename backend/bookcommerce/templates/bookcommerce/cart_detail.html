@@ -5,7 +5,7 @@
     <div style="text-align: right;">
         <form action="{% url 'delete_all_cart_items' %}" method="POST">
             {% csrf_token %}
-            <button type="submit">Delete All</button>
+            <button type="submit">Hapus Semua</button>
         </form>
     </div>
 
@@ -22,17 +22,17 @@
                 </form>
                 <form action="{% url 'delete_cart_item' item.id %}" method="POST">
                     {% csrf_token %}
-                    <button type="submit">Delete</button>
+                    <button type="submit">Hapus</button>
                 </form>
             </li>
         {% empty %}
-            <li>Your cart is empty.</li>
+            <li>Keranjang anda kosong.</li>
         {% endfor %}
     </ul>
 
-    <h2>Total Price: {{ total_price }}</h2>
+    <h2>Total Harga: {{ total_price }}</h2>
 
-    <form action="#" method="POST">
+    <form action="{% url 'checkout' %}" method="POST">
         {% csrf_token %}
         <button type="submit">Checkout</button>
     </form>
