@@ -6,7 +6,7 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
-from .models import Book, Cart, CartItem
+from .models import Book, Cart, CartItem, Order, OrderItem, Shipment, Payment
 from .forms import UserRegisterForm
 
 def register(request):
@@ -102,3 +102,73 @@ def delete_all_cart_items(request):
     cart = get_object_or_404(Cart, customer=request.user)
     cart.items.all().delete()
     return redirect('cart_detail')
+
+@login_required
+def checkout(request):
+    book_id = None
+    if request.method == 'POST':
+        book_id = request.POST.get('book_id')
+        if book_id:
+            book = get_object_or_404(Book, id=book_id)
+        else:  
+            cart = get_object_or_404(Cart, customer=request.user)
+
+    shipments = Shipment.objects.all()
+    payments = Payment.objects.all()
+    cart = Cart.objects.get(customer=request.user)
+    book = Book.objects.get(id=book_id) if book_id else None
+
+    return render(request, 'bookcommerce/checkout.html', {
+        'shipments': shipments,
+        'payments': payments,
+        'cart_items': cart.items.all(),
+        'total_price': sum(item.book.price * item.quantity for item in cart.items.all()),
+        'book': book,
+    })
+
+@login_required
+def payment(request):
+    book_id = None
+    if request.method == 'POST':
+        book_id = request.POST.get('book_id')
+        address_id = request.POST.get('address')
+        shipment_id = request.POST.get('shipment')
+        payment_id = request.POST.get('payment')
+
+        if not address_id or not shipment_id or not payment_id:
+            messages.error(request, "Mohon lengkapi semua informasi!")
+            return redirect('checkout')
+
+        shipment = get_object_or_404(Shipment, id=shipment_id)
+        payment = get_object_or_404(Payment, id=payment_id)
+
+        if book_id:
+            book = get_object_or_404(Book, id=book_id)
+            order = Order.objects.create(
+                customer=request.user,
+                address=request.user.address,
+                shipment=shipment,
+                payment=payment
+            )
+            OrderItem.objects.create(order=order, book=book, quantity=1)
+        else:  
+            cart = get_object_or_404(Cart, customer=request.user)
+            order = Order.objects.create(
+                customer=request.user,
+                address=request.user.address,
+                shipment=shipment,
+                payment=payment
+            )
+            for item in cart.items.all():
+                OrderItem.objects.create(order=order, book=item.book, quantity=item.quantity)
+            cart.items.all().delete()  # Clear the cart
+
+        messages.success(request, "Order berhasil dibuat!")
+        book = Book.objects.get(id=book_id) if book_id else None
+        return render(request, 'bookcommerce/payment.html', {
+            'shipment': shipment,
+            'payment': payment,
+            'order_items': order.items.all(),
+            'total_price': sum(item.book.price * item.quantity for item in order.items.all()),
+            'book': book,
+        })
