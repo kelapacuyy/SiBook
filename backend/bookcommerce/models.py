@@ -18,7 +18,7 @@ class Address(models.Model):
 
 class Customer(AbstractUser):
     email = models.EmailField(max_length=100, unique=True)
-    address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=True, db_constraint=False)
+    address = models.OneToOneField(Address, on_delete=models.SET_NULL, null=True, blank=True, db_constraint=False)
     
     # related_name to avoid clashes with default User model
     groups = models.ManyToManyField('auth.Group', related_name='customers')
@@ -74,6 +74,21 @@ class Book(models.Model):
 	def __str__(self):
 		return self.title
 
+# Checkout related models
+class Shipment(models.Model):
+    name = models.CharField(max_length=100)
+    price = models.IntegerField()
+    eta = models.IntegerField()  # Estimated time of arrival (in days)
+
+    def __str__(self):
+        return self.name
+
+class Payment(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
 # Order related models
 class Cart(models.Model):
     customer = models.OneToOneField(Customer, on_delete=models.CASCADE)
@@ -102,12 +117,15 @@ class Order(models.Model):
     books = models.ManyToManyField(Book, through='OrderItem')
     order_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=50, choices=ORDER_STATUS_CHOICES, default='Pending')
+    address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=True)
+    shipment = models.ForeignKey(Shipment, on_delete=models.SET_NULL, null=True, blank=True)
+    payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f"Order {self.id} - {self.customer.username}"
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
 
