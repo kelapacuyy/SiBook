@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "sass": "^1.77.2"
+  },
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass": "sass --watch bookcommerce/static/bookcommerce/style.scss bookcommerce/static/bookcommerce/style.css --style compressed"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

@@ -6,12 +6,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'bookcommerce/base.css' %}">
+    <link rel="stylesheet" href="{% static 'bookcommerce/style.css' %}">
     <title>SiBook</title>
 </head>
 
 <body>
-    <nav>
+    <!-- <nav>
         
         <div class="navbarleft">
             <a class="logo" href="{% url 'home' %}"><img src="{% static '/bookcommerce/assets/logo_horizontal.svg' %}" alt="logo"></a>
@@ -39,7 +39,9 @@
             {% endif %}
 
         </div>
-    </nav>
+    </nav> -->
+
+    
 
     <div class="container">
         {% if messages %}
@@ -52,6 +54,28 @@
 
         {% block content %} {% endblock %}
     </div>
+
+    <footer class="container mt-5">
+        <div class="row g-4">
+            <div class="col">
+                <h5 class="fw-bold">Ikuti Kami</h5>
+                <ul>
+                    <li>twitter</li>
+                    <li>Instagram</li>
+                    <li>LinkedIn</li>
+                </ul>
+            </div>
+            <div class="col">
+                <h5 class="fw-bold">Jelajahi SiBook</h5>
+            </div>
+            <div class="col">
+                <h5 class="fw-bold">Layanan Pelanggan</h5>
+            </div>
+            <div class="col">
+                <h5 class="fw-bold">Akses Cepat</h5>
+            </div>
+        </div>
+    </footer>
     
 </body>
 </html>
