@@ -1,5 +1,233 @@
-{% extends "bookcommerce/base.html" %} {% block content %}
+{% extends "bookcommerce/base.html" %} {% load static %} {% block content %}
 
-<h1>Cart</h1>
+<div class="container">
+    <div class="row gap-3">
+        <div class="col-12">
+            <h2 class="fw-bold">Keranjang Saya</h2>
+        </div>
+        <div class="col-12 col-lg-7">
+            <div class="p-4 rounded shadow-sm border">
+                <div class="row">
+                    <div class="col-2">
+                        <img
+                            src="{% static '/bookcommerce/img/buku2.png' %}"
+                            class="img-fluid"
+                            alt=""
+                        />
+                    </div>
+                    <div class="col">
+                        <p class="fw-bold m-0">Judul Buku</p>
+                        <p class="m-0">Penulis: laskdjasljd</p>
+                        <p class="m-0">Berat: 0,5 kg</p>
+                        <button class="btn btn-outline-danger btn-sm">Hapus</button>
+                        <button class="btn btn-outline-primary btn-sm">Simpan Untuk Nanti</button>
+                    </div>
+                    <div class="col text-end">
+                        <p class="m-0">Rp 65.000</p>
+                        <div class="input-group w-50 ms-auto">
+                            <label class="input-group-text" for="inputGroupSelect01">Qty</label>
+                            <select class="form-select" id="inputGroupSelect01">
+                                <option value="1" selected>1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-2">
+                        <img
+                            src="{% static '/bookcommerce/img/buku2.png' %}"
+                            class="img-fluid"
+                            alt=""
+                        />
+                    </div>
+                    <div class="col">
+                        <p class="fw-bold m-0">Judul Buku</p>
+                        <p class="m-0">Penulis: laskdjasljd</p>
+                        <p class="m-0">Berat: 0,5 kg</p>
+                        <button class="btn btn-outline-danger btn-sm">Hapus</button>
+                        <button class="btn btn-outline-primary btn-sm">Simpan Untuk Nanti</button>
+                    </div>
+                    <div class="col text-end">
+                        <p class="m-0">Rp 65.000</p>
+                        <div class="input-group w-50 ms-auto">
+                            <label class="input-group-text" for="inputGroupSelect01">Qty</label>
+                            <select class="form-select" id="inputGroupSelect01">
+                                <option value="1" selected>1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-2">
+                        <img
+                            src="{% static '/bookcommerce/img/buku2.png' %}"
+                            class="img-fluid"
+                            alt=""
+                        />
+                    </div>
+                    <div class="col">
+                        <p class="fw-bold m-0">Judul Buku</p>
+                        <p class="m-0">Penulis: laskdjasljd</p>
+                        <p class="m-0">Berat: 0,5 kg</p>
+                        <button class="btn btn-outline-danger btn-sm">Hapus</button>
+                        <button class="btn btn-outline-primary btn-sm">Simpan Untuk Nanti</button>
+                    </div>
+                    <div class="col text-end">
+                        <p class="m-0">Rp 65.000</p>
+                        <div class="input-group w-50 ms-auto">
+                            <label class="input-group-text" for="inputGroupSelect01">Qty</label>
+                            <select class="form-select" id="inputGroupSelect01">
+                                <option value="1" selected>1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col">
+                        <a href="/" class="btn btn-info"
+                            ><i class="bi bi-arrow-left"></i> Kembali ke Toko</a
+                        >
+                    </div>
+                    <div class="col text-end">
+                        <a href="#" class="btn btn-outline-secondary">Hapus Semua</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-1 mb-4 g-3 align-items-center justify-content-center">
+                <div class="col-2 col-md-1">
+                    <img
+                        src="{% static '/bookcommerce/assets/secure.svg' %}"
+                        class="img-fluid"
+                        alt=""
+                    />
+                </div>
+                <div class="col-10 col-md-3">
+                    <span><small>Pembayaran aman</small></span>
+                </div>
+                <div class="col-2 col-md-1">
+                    <img
+                        src="{% static '/bookcommerce/assets/support.svg' %}"
+                        class="img-fluid"
+                        alt=""
+                    />
+                </div>
+                <div class="col-10 col-md-3">
+                    <span><small>Dukungan pelanggan</small></span>
+                </div>
+                <div class="col-2 col-md-1">
+                    <img
+                        src="{% static '/bookcommerce/assets/free.svg' %}"
+                        class="img-fluid"
+                        alt=""
+                    />
+                </div>
+                <div class="col-10 col-md-3">
+                    <span><small>Gratis pengiriman</small></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg">
+            <div class="row p-4 rounded shadow-sm border mb-3">
+                <label for="exampleInputEmail1" class="form-label">Punya Kupon?</label>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" disabled />
+                    <button class="btn text-secondary" type="button" disabled>Terapkan</button>
+                </div>
+            </div>
+            <div class="row p-4 rounded shadow-sm border">
+                <div class="col-6">Subtotal:</div>
+                <div class="col-6 text-end">Rp 721.000</div>
+                <div class="col-6">Diskon:</div>
+                <div class="col-6 text-end text-danger">- Rp 21.000</div>
+                <div class="col-6">Pajak:</div>
+                <div class="col-6 text-end text-success">+ Rp 7.210</div>
+                <hr />
+                <div class="col-6 h5 fw-bold">Total:</div>
+                <div class="col-6 h5 text-end fw-bold">Rp 707.210</div>
+                <div class="col-12 mt-4">
+                    <button class="btn btn-success w-100">Buat Pesanan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row p-4 mb-4 rounded shadow-sm border">
+        <h5 class="fw-bold">Simpan Untuk Nanti</h5>
+        <div class="col-12 col-md-3">
+            <div class="text-center bg-body-secondary rounded">
+                <img
+                    src="{% static '/bookcommerce/img/buku2.png' %}"
+                    alt=""
+                    class="img-fluid text-center"
+                />
+            </div>
+            <p class="fw-bold m-0 mt-3">Rp 98.000</p>
+            <p class="m-0">HARLEM SHUFFLE - Colson White</p>
+            <button class="btn btn-sm btn-outline-secondary mt-3">
+                <i class="bi bi-cart"></i> Tambahkan ke Keranjang
+            </button>
+        </div>
+        <div class="col-12 col-md-3">
+            <div class="text-center bg-body-secondary rounded">
+                <img
+                    src="{% static '/bookcommerce/img/buku2.png' %}"
+                    alt=""
+                    class="img-fluid text-center"
+                />
+            </div>
+            <p class="fw-bold m-0 mt-3">Rp 98.000</p>
+            <p class="m-0">HARLEM SHUFFLE - Colson White</p>
+            <button class="btn btn-sm btn-outline-secondary mt-3">
+                <i class="bi bi-cart"></i> Tambahkan ke Keranjang
+            </button>
+        </div>
+        <div class="col-12 col-md-3">
+            <div class="text-center bg-body-secondary rounded">
+                <img
+                    src="{% static '/bookcommerce/img/buku2.png' %}"
+                    alt=""
+                    class="img-fluid text-center"
+                />
+            </div>
+            <p class="fw-bold m-0 mt-3">Rp 98.000</p>
+            <p class="m-0">HARLEM SHUFFLE - Colson White</p>
+            <button class="btn btn-sm btn-outline-secondary mt-3">
+                <i class="bi bi-cart"></i> Tambahkan ke Keranjang
+            </button>
+        </div>
+        <div class="col-12 col-md-3">
+            <div class="text-center bg-body-secondary rounded">
+                <img
+                    src="{% static '/bookcommerce/img/buku2.png' %}"
+                    alt=""
+                    class="img-fluid text-center"
+                />
+            </div>
+            <p class="fw-bold m-0 mt-3">Rp 98.000</p>
+            <p class="m-0">HARLEM SHUFFLE - Colson White</p>
+            <button class="btn btn-sm btn-outline-secondary mt-3">
+                <i class="bi bi-cart"></i> Tambahkan ke Keranjang
+            </button>
+        </div>
+    </div>
+    <div class="row align-items-center rounded bg-primary p-5 my-5">
+        <div class="col-12 col-md-8 text-white">
+            <h5 class="fw-bold">Super discount on more than 100 USD</h5>
+            <p class="m-0"><small>Have you ever finally just write dummy info</small></p>
+        </div>
+        <div class="col-12 col-md-4 text-end">
+            <button class="btn btn-warning">Shop Now</button>
+        </div>
+    </div>
+    <hr />
+</div>
 
 {% endblock content %}
