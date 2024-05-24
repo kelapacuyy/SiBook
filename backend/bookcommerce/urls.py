@@ -1,6 +1,6 @@
 from django.urls import path, include
 from . import views
-from .views import BookListView, BookDetailView, add_to_cart, cart_detail, update_cart_item, delete_cart_item, delete_all_cart_items, CartStaticView, SearchView
+from .views import BookListView, BookDetailView, add_to_cart, cart_detail, update_cart_item, delete_cart_item, delete_all_cart_items, CartStaticView, SearchView, OrderStaticView
 
 urlpatterns = [
     path('', BookListView.as_view(), name='home'),
@@ -11,5 +11,6 @@ urlpatterns = [
     path('cart/update/<int:item_id>/', update_cart_item, name='update_cart_item'),
     path('cart/delete-item/<int:item_id>/', delete_cart_item, name='delete_cart_item'),
     path('cart/delete-all/', delete_all_cart_items, name='delete_all_cart_items'),
-    path('search', SearchView.as_view(), name='search')
+    path('search', SearchView.as_view(), name='search'),
+    path('order', OrderStaticView.as_view(), name='order_static')
 ]
