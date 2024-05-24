@@ -2,14 +2,15 @@
 {% block content %}
     <h1>Checkout</h1>
 
+    {% if not request.user.address %}
+        <button onclick="location.href='{% url 'create_address' %}?next={{ request.path }}'">Tambah Alamat</button>
+    {% else %}
+        <p>{{ request.user.address.full_address }}</p>
+        <button onclick="location.href='{% url 'update_address' user.address.id %}?next={{ request.path }}'">Ubah Alamat</button>
+    {% endif %}
+
     <form action="{% url 'payment' %}" method="POST">
         {% csrf_token %}
-        {% if not request.user.address %}
-            <button type="button" onclick="location.href='#'">Tambah Alamat</button>
-        {% else %}
-            <p>{{ request.user.address.full_address }}</p>
-            <button type="button" onclick="location.href='#'">Edit Alamat</button>
-        {% endif %}
         <input type="hidden" name="address" value="{{ request.user.address.id }}">
 
         <h2>Kurir</h2>
