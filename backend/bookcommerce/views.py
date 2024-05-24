@@ -48,6 +48,10 @@ class BookDetailView(View):
 class CartStaticView(View):
     def get(self, request):
         return render(request, 'bookcommerce/cart_detail_static.html')
+    
+class SearchView(View):
+    def get(self, request):
+        return render(request, 'bookcommerce/search.html')
 
 @login_required
 def add_to_cart(request, book_id):
