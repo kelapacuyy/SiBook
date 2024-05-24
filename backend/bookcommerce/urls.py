@@ -1,6 +1,8 @@
 from django.urls import path, include
 from . import views
-from .views import BookListView, BookDetailView, add_to_cart, cart_detail, update_cart_item, delete_cart_item, delete_all_cart_items, checkout, payment
+from .views import BookListView, BookDetailView, add_to_cart, cart_detail, update_cart_item, delete_cart_item, delete_all_cart_items, checkout, payment, profile, order_history, create_address, update_address, change_password, search
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', BookListView.as_view(), name='home'),
@@ -12,4 +14,13 @@ urlpatterns = [
     path('cart/delete-all/', delete_all_cart_items, name='delete_all_cart_items'),
     path('checkout/', checkout, name='checkout'),
     path('payment/', payment, name='payment'),
+    path('profile/', profile, name='profile'),
+    path('order_history/', views.order_history, name='order_history'),
+    path('address/create/', create_address, name='create_address'),
+    path('address/update/<int:address_id>/', update_address, name='update_address'),
+    path('profile/change-password/', change_password, name='change_password'),
+    path('search', search, name='search')
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

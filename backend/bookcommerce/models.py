@@ -19,6 +19,7 @@ class Address(models.Model):
 class Customer(AbstractUser):
     email = models.EmailField(max_length=100, unique=True)
     address = models.OneToOneField(Address, on_delete=models.SET_NULL, null=True, blank=True, db_constraint=False)
+    profile_picture = models.ImageField(upload_to='profile_pictures/', default='defaults/default_profile_img.jpg', null=True, blank=True)
     
     # related_name to avoid clashes with default User model
     groups = models.ManyToManyField('auth.Group', related_name='customers')

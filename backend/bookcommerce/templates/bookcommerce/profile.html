@@ -8,22 +8,36 @@
 </div>
 
 <div>
+    <form action="{% url 'profile' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ profile_picture_form.as_p }}
+        <button type="submit">Ubah Foto Profil</button>
+    </form>
+</div>
+
+<div>
     <h3>Profile Information</h3>
     <p><strong>Username:</strong> {{ user.username }}</p>
     <p><strong>Email:</strong> {{ user.email }}</p>
-    <p><strong>Address:</strong> {{ user.address.full_address if user.address else "No address provided" }}</p>
-    <button onclick="location.href='#'">Edit Address</button>
+    {% if user.address %}
+        <div><strong>Alamat:</strong> {{ user.address.full_address }}</div>
+        <button onclick="location.href='{% url 'update_address' user.address.id %}?next={{ request.path }}'">Ubah Alamat</button>
+    {% else %}
+        <button onclick="location.href='{% url 'create_address' %}?next={{ request.path }}'">Tambah Alamat</button>
+    {% endif %}
 </div>
 
 <div>
-    <button onclick="location.href='{% url 'change_password' %}'">Change Password</button>
+    <button onclick="location.href='{% url 'change_password' %}'">Ubah Password</button>
+</div>
+<div>
+    <button><a href="{% url 'order_history' %}">Order History</a></button>
+</div>
+<div>
+    <form action="{% url 'logout' %}" method="POST">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
 </div>
 
-<div>
-    <button onclick="location.href='{% url 'order_history' %}'">Order History</button>
-</div>
-
-<div>
-    <button onclick="location.href='{% url 'logout' %}'">Logout</button>
-</div>
 {% endblock %}

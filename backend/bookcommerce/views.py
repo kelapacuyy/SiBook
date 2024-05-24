@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, View, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, View
 from django.views.decorators.http import require_POST
 from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
-from .models import Book, Cart, CartItem, Order, OrderItem, Shipment, Payment
-from .forms import UserRegisterForm
+from .models import Author, Series, Book, Cart, CartItem, Order, OrderItem, Shipment, Payment, Address
+from .forms import UserRegisterForm, AddressForm, ProfilePictureForm, CustomPasswordChangeForm
+
 
 def register(request):
     if request.method == 'POST':
@@ -172,3 +174,91 @@ def payment(request):
             'total_price': sum(item.book.price * item.quantity for item in order.items.all()),
             'book': book,
         })
+
+@login_required
+def profile(request):
+    if request.method == 'POST' and 'profile_picture' in request.FILES:
+        profile_picture_form = ProfilePictureForm(request.POST, request.FILES, instance=request.user)
+        if profile_picture_form.is_valid():
+            profile_picture_form.save()
+            messages.success(request, 'Foto profil berhasil diubah.')
+            return redirect('profile')
+    else:
+        profile_picture_form = ProfilePictureForm(instance=request.user)
+        
+    return render(request, 'bookcommerce/profile.html', {
+        'profile_picture_form': profile_picture_form,
+    })
+
+@login_required
+def order_history(request):
+    orders = Order.objects.filter(customer=request.user).order_by('-order_date')
+    
+    orders_with_total = []
+    for order in orders:
+        total_price = sum(item.book.price * item.quantity for item in order.items.all())
+        orders_with_total.append((order, total_price))
+    
+    return render(request, 'bookcommerce/order_history.html', {
+        'orders_with_total': orders_with_total,
+    })
+
+@login_required
+def create_address(request):
+    next_url = request.GET.get('next', reverse('profile'))  # Default to 'profile' if 'next' is not provided
+    if request.method == 'POST':
+        form = AddressForm(request.POST)
+        if form.is_valid():
+            address = form.save(commit=False)
+            address.save()
+            request.user.address = address
+            request.user.save()
+            messages.success(request, 'Alamat berhasil ditambahkan.')
+            return redirect(next_url)
+    else:
+        form = AddressForm()
+    return render(request, 'bookcommerce/address_form.html', {'form': form, 'next': next_url})
+
+@login_required
+def update_address(request, address_id):
+    next_url = request.GET.get('next', reverse('profile'))  # Default to 'profile' if 'next' is not provided
+    address = get_object_or_404(Address, id=address_id)
+    if request.method == 'POST':
+        form = AddressForm(request.POST, instance=address)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Alamat berhasil diubah.')
+            return redirect(next_url)
+    else:
+        form = AddressForm(instance=address)
+    return render(request, 'bookcommerce/address_form.html', {'form': form, 'next': next_url})
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = CustomPasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # update the session with the new password
+            messages.success(request, 'Password berhasil diubah.')
+            return redirect('profile')
+        else:
+            messages.error(request, 'Silakan perbaiki kesalahan di bawah.')
+    else:
+        form = CustomPasswordChangeForm(request.user)
+    return render(request, 'bookcommerce/change_password.html', {'form': form})
+
+def search(request):
+    if request.method == 'POST':
+        search = request.POST['search']
+        search_tag = request.POST['search_tag']
+        if search_tag == 'books':
+            context = { 'found_books': Book.objects.filter(title__icontains=request.POST['search']), 'search_tag': search_tag, 'search':search }
+        elif search_tag == 'authors':
+            context = { 'found_authors': Author.objects.filter(name__icontains=request.POST['search']), 'search_tag': search_tag, 'search': search }
+        elif search_tag == 'series':
+            context = { 'found_series': Series.objects.filter(name__icontains=request.POST['search']), 'search_tag': search_tag, 'search': search }        
+        else:
+            context = { 'search_tag': search_tag }
+        return render(request, 'bookcommerce/search.html', context)
+    return redirect(reverse('home'))
