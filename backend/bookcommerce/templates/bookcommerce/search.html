@@ -1,0 +1,66 @@
+{% extends "bookcommerce/base.html" %}
+{% block content %}
+
+    <form action="{% url 'search' %}" method="POST">
+        {% csrf_token %}
+        <button name="search_tag" value="books" type="submit">Buku</button>
+        <input name="search" type="hidden" value="{{ search }}">
+    </form>
+    <form action="{% url 'search' %}" method="POST">
+        {% csrf_token %}
+        <button name="search_tag" value="authors" type="submit">Penulis</button>
+        <input name="search" type="hidden" value="{{ search }}">
+    </form>
+    <form action="{% url 'search' %}" method="POST">
+        {% csrf_token %}
+        <button name="search_tag" value="series" type="submit">Series</button>
+        <input name="search" type="hidden" value="{{ search }}">
+    </form>
+    
+    {% if search_tag == 'books' %}
+        {% for book in found_books %}
+        <article>
+          <div>
+            <img src="{{ book.cover_img.url }}" style="max-width:100px">
+            <h2><a href="{% url 'bookcommerce-book-detail' book.id %}">{{ book.title }}</a></h2>
+            <a href="#">{{ book.author }}</a>
+            <b>{{ book.price }}</b>
+          </div>
+          <form action="{% url 'add_to_cart' book.id %}" method="POST">
+              {% csrf_token %}
+              <button type="submit">Masukkan ke keranjang</button>
+          </form>
+        </article>
+        {% empty %}
+            <h1>Tidak ada buku dengan judul tersebut</h1>
+        {% endfor %}
+
+    {% elif search_tag == 'authors' %}
+        {% for author in found_authors %}
+        <article>
+          <div>
+            <img src="{{ author.author_img.url }}" style="max-width:100px">
+            <h2><a href="#">{{ author.name }}</a></h2>
+            <p>{{ author.nationality }}</p>
+          </div>
+        </article>
+        {% empty %}
+            <h1>Tidak ada penulis dengan nama tersebut</h1>
+        {% endfor %}
+
+    {% elif search_tag == 'series' %}
+        {% for series in found_series %}
+        <article>
+          <div>
+            <h2><a href="#">{{ series.name }}</a></h2>
+          </div>
+        </article>
+        {% empty %}
+            <h1>Tidak ada series dengan nama tersebut</h1>
+        {% endfor %}
+
+    {% else %}
+        <h1>Tidak dapat mencari berdasarkan tag tersebut!</h1>
+    {% endif %}
+    
+{% endblock content %}
