@@ -46,6 +46,18 @@ class BookDetailView(View):
         }
 
         return render(request, 'bookcommerce/book_detail.html', context)
+    
+class CartStaticView(View):
+    def get(self, request):
+        return render(request, 'bookcommerce/cart_detail_static.html')
+    
+class SearchView(View):
+    def get(self, request):
+        return render(request, 'bookcommerce/search.html')
+
+class OrderStaticView(View):
+    def get(self, request):
+        return render(request, 'bookcommerce/order_static.html')
 
 @login_required
 def add_to_cart(request, book_id):

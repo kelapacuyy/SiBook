@@ -1,0 +1,116 @@
+{% extends "bookcommerce/base.html" %} {% load static %} {% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col" style="--bs-breadcrumb-divider: '>'">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Profil</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-3">
+            <div class="row align-items-center mb-4">
+                <div class="col-auto">
+                    <img
+                        src="{% static '/bookcommerce/assets/user.svg' %}"
+                        alt=""
+                        class="img-fluid"
+                    />
+                </div>
+                <div class="col">
+                    <h4 class="m-0">user123</h4>
+                </div>
+            </div>
+            <a href="#" class="link-body-emphasis text-decoration-none">
+                <h5><i class="bi bi-person text-primary"></i> Akun Saya</h5>
+            </a>
+            <a href="#" class="link-body-emphasis text-decoration-none">
+                <h5 class="fw-bold">
+                    <i class="bi bi-file-text-fill text-primary"></i> Pesanan Saya
+                </h5>
+            </a>
+            <a href="#" class="link-body-emphasis text-decoration-none">
+                <h5><i class="bi bi-box-arrow-left text-primary"></i> Logout</h5>
+            </a>
+        </div>
+        <div class="col-12 col-md-9 px-4 py-3 border rounded">
+            <div class="row">
+                <div class="col">
+                    <h5 class="fw-bold">Pesanan Saya</h5>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-2 col-md-auto">
+                    <img
+                        src="{% static '/bookcommerce/img/buku2.png' %}"
+                        alt=""
+                        class="img-fluid"
+                    />
+                </div>
+                <div class="col">
+                    <p class="m-0 fw-bold">Chain of Gold</p>
+                    <p class="m-0 text-body-secondary"><small>Penulis: Cassandra Clare</small></p>
+                    <p class="m-0 text-body-secondary"><small>Berat: 0,67 kg</small></p>
+                    <p class="m-0 text-body-secondary"><small>x2</small></p>
+                </div>
+                <div class="col text-end">
+                    <p class="text-danger fw-bold">SEDANG DIKEMAS</p>
+                    <h6 class="text-body-tertiary align-self-end">
+                        Total Pesanan: <strong class="text-black">Rp 486.000</strong>
+                    </h6>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-2 col-md-auto">
+                    <img
+                        src="{% static '/bookcommerce/img/buku2.png' %}"
+                        alt=""
+                        class="img-fluid"
+                    />
+                </div>
+                <div class="col">
+                    <p class="m-0 fw-bold">No More Police</p>
+                    <p class="m-0 text-body-secondary"><small>Penulis: Cassandra Clare</small></p>
+                    <p class="m-0 text-body-secondary"><small>Berat: 0,67 kg</small></p>
+                    <p class="m-0 text-body-secondary"><small>x2</small></p>
+                </div>
+                <div class="col text-end">
+                    <p class="text-danger fw-bold">DIKIRIM</p>
+                    <h6 class="text-body-tertiary align-self-end">
+                        Total Pesanan: <strong class="text-black">Rp 85.000</strong>
+                    </h6>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-2 col-md-auto">
+                    <img
+                        src="{% static '/bookcommerce/img/buku2.png' %}"
+                        alt=""
+                        class="img-fluid"
+                    />
+                </div>
+                <div class="col">
+                    <p class="m-0 fw-bold">Glad Mom</p>
+                    <p class="m-0 text-body-secondary"><small>Penulis: Cassandra Clare</small></p>
+                    <p class="m-0 text-body-secondary"><small>Berat: 0,67 kg</small></p>
+                    <p class="m-0 text-body-secondary"><small>x1</small></p>
+                </div>
+                <div class="col text-end">
+                    <p class="text-danger fw-bold">SELESAI</p>
+                    <h6 class="text-body-tertiary align-self-end">
+                        Total Pesanan: <strong class="text-black">Rp 150.000</strong>
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

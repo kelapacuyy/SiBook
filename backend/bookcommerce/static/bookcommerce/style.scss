@@ -1,11 +1,11 @@
 // Importing fonts
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
 // Include functions first (so you can manipulate colors, SVGs, calc, etc)
 @import "../../../node_modules/bootstrap/scss/functions";
 
-$primary: #0066A2;
-$secondary: #5EB1E1;
+$primary: #0066a2;
+$secondary: #5eb1e1;
 
 // Include any default variable overrides here
 // $theme-colors: (
@@ -15,9 +15,7 @@ $secondary: #5EB1E1;
 // $theme-colors: map-merge($theme-colors, $custom-colors);
 
 // Changing font base
-$font-family-base: 'Montserrat', sans-serif;
-
-@import "../../../node_modules/bootstrap/scss/variables";
+$font-family-base: "Montserrat", sans-serif;
 
 // Include any default map overrides here
 
