@@ -1,43 +1,100 @@
 {% extends "bookcommerce/base.html" %}
+{% load static %}
 {% block content %}
-<h1>Profile</h1>
 
-<div>
-    <img src="{{ user.profile_picture.url }}" alt="Profile Picture" style="max-width:150px;">
-    <h2>{{ user.username }}</h2>
-</div>
+<div class="container">
+    <div class="row">
+        <div class="col" style="--bs-breadcrumb-divider: '>'">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Akun Saya</a></li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-3">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <img
+                        src="{{ user.profile_picture.url }}"
+                        alt="Profile Picture"
+                        class="rounded-circle"
+                        style="max-width: 60px;"
+                    />
+                </div>
+                <div class="col">
+                    <h4 class="m-0">{{ user.username }}</h4>
+                </div>
+            </div>
+            <div class="row align-items-center my-4">
+                <a href="{% url 'profile' %}" class="link-body-emphasis text-decoration-none my-2">
+                    <h6 class="fw-bold"><i class="bi bi-person-fill text-primary"></i> Akun Saya</h6>
+                </a>
+                <a href="{% url 'order_history' %}" class="link-body-emphasis text-decoration-none my-2">
+                    <h6><i class="bi bi-file-text text-primary"></i> Pesanan Saya</h6>
+                </a>
+                <a href="{% url 'logout' %}" class="link-body-emphasis text-decoration-none my-2">
+                    <h6><i class="bi bi-box-arrow-left text-primary"></i> Logout</h6>
+                </a>
+            </div>      
+        </div>
+        <div class="col-12 col-md-9 px-4 py-3 border rounded">
+            <div class="row">
+                <div class="col">
+                    <h5 class="fw-bold mt-3">Profil Saya</h5>
+                </div>
+            </div>
+            <hr />
+            <div class="row mb-3">
+                <div class="col-12 col-md-2"><strong>Username</strong></div>
+                <div class="col-12 col-md-10">{{ user.username }}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-12 col-md-2"><strong>Email</strong></div>
+                <div class="col-12 col-md-10">{{ user.email }}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-12 col-md-2"><strong>Foto Profil</strong></div>
+                <div class="col-12 col-md-10">
+                    <form action="{% url 'profile' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ profile_picture_form.as_p }}
+                        <button class="btn btn-outline-primary btn-sm" type="submit">Simpan Foto Profil</button>
+                    </form>
+                </div>
+            </div>
+            {% if user.address %}
+                <div class="row mb-3">
+                    <div class="col-12 col-md-2"><strong>Alamat</strong></div>
+                    <div class="col-12 col-md-10">{{ user.address.full_address }}
+                        <a href="{% url 'update_address' user.address.id %}?next={{ request.path }}" class="btn text-primary">
+                            <i class="bi bi-pencil-fill"></i>
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="row mb-3">
+                    <div class="col-12 col-md-2"><strong>Alamat</strong></div>
+                    <div class="col-12 col-md-10">Anda belum menambahkan alamat
+                        <a href="{% url 'create_address' %}?next={{ request.path }}" class="btn text-primary">
+                            <i class="bi bi-plus-circle"></i>
+                        </a>
+                    </div>
+                </div>
 
-<div>
-    <form action="{% url 'profile' %}" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ profile_picture_form.as_p }}
-        <button type="submit">Ubah Foto Profil</button>
-    </form>
-</div>
-
-<div>
-    <h3>Profile Information</h3>
-    <p><strong>Username:</strong> {{ user.username }}</p>
-    <p><strong>Email:</strong> {{ user.email }}</p>
-    {% if user.address %}
-        <div><strong>Alamat:</strong> {{ user.address.full_address }}</div>
-        <button onclick="location.href='{% url 'update_address' user.address.id %}?next={{ request.path }}'">Ubah Alamat</button>
-    {% else %}
-        <button onclick="location.href='{% url 'create_address' %}?next={{ request.path }}'">Tambah Alamat</button>
-    {% endif %}
-</div>
-
-<div>
-    <button onclick="location.href='{% url 'change_password' %}'">Ubah Password</button>
-</div>
-<div>
-    <button><a href="{% url 'order_history' %}">Order History</a></button>
-</div>
-<div>
-    <form action="{% url 'logout' %}" method="POST">
-        {% csrf_token %}
-        <button type="submit">Logout</button>
-    </form>
+            {% endif %}
+            <div class="row mb-3">
+                <div class="col-12 col-md-2"><strong>Kata Sandi</strong></div>
+                <div class="col-12 col-md-10">***********
+                    <a href="{% url 'change_password' %}" class="btn text-primary">
+                        <i class="bi bi-pencil-fill"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

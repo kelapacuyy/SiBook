@@ -37,7 +37,11 @@
                         </a>
                     </div>
                     <div class="col text-end">
-                        <a href="#" class="btn btn-link text-white">Butuh bantuan?</a>
+                        {% if user.is_authenticated %}
+                            <p class="mt-2">Selamat datang, {{ user.username }}</p>
+                        {% else %}
+                            <a href="#" class="btn btn-link text-white">Butuh bantuan?</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -48,6 +52,8 @@
                     <img
                         src="{% static '/bookcommerce/assets/logo_horizontal.svg' %}"
                         alt="SiBook"
+                        width="150"
+                        height="auto"
                     />
                 </a>
                 <button
@@ -62,22 +68,44 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse gap-3 text-end" id="navbarSupportedContent">
-                    <form class="input-group d-flex flex-grow-1" role="search">
+                    <form action="{% url 'search' %}" method="POST" class="input-group d-flex flex-grow-1" role="search">
+                        {% csrf_token %}
                         <span class="input-group-text rounded-start-pill">
-                            <i class="bi bi-search"></i>
+                            <button type="submit" class="btn p-0 border-0 bg-transparent">
+                                <i class="bi bi-search"></i>
+                            </button>
                         </span>
                         <input
-                            class="form-control rounded-end-pill"
+                            class="form-control"
                             type="search"
                             placeholder="Search"
                             aria-label="Search"
+                            name="search"
                         />
-                    </form>
-                    <a href="#" class="btn text-primary">
+                        <select name="search_tag" class="form-select rounded-end-pill">
+                            <option value="books">Buku</option>
+                            <option value="authors">Penulis</option>
+                            <option value="series">Series</option>
+                        </select>
+                    </form>                    
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'cart_detail' %}" class="btn text-primary">
                         <i class="bi bi-cart"></i>
                     </a>
-                    <a href="/login" class="btn btn-outline-primary">Login</a>
-                    <a href="/register" class="btn btn-primary">Daftar</a>
+                    <div class="dropdown">
+                        <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="{{ user.profile_picture.url }}" alt="Profile Picture" class="rounded-circle" width="32" height="32">
+                            {{ user.username }}
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <li><a class="dropdown-item" href="{% url 'profile' %}">Profil</a></li>
+                            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-outline-primary">Login</a>
+                    <a href="{% url 'register' %}" class="btn btn-primary">Daftar</a>
+                    {% endif %}
                 </div>
             </div>
         </nav>
@@ -93,7 +121,7 @@
 
         <footer class="container my-4">
             <hr />
-            <div class="row">
+            <div class="row my-4">
                 <div class="col-12 col-md-3">
                     <h5 class="fw-bold">Ikuti Kami</h5>
                     <ul class="list-unstyled">
@@ -140,8 +168,9 @@
                 </div>
             </div>
         </footer>
-        <div class="bg-secondary py-4 text-center">
-            <p class="m-0">© SiBook 2024. Hak Cipta Dilindungi</p>
+        <div class="bg-primary py-4 text-center">
+            <p class="m-0 text-white">© SiBook 2024. Hak Cipta Dilindungi</p>
         </div>
+        
     </body>
 </html>

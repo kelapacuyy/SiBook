@@ -1,23 +1,48 @@
 {% extends "bookcommerce/base.html" %}
 {% block content %}
-    <h1>Pembayaran</h1>
+    
+<div class="container my-5">
+    <h1 class="mb-4">Pembayaran</h1>
 
-    <p>Alamat Pengiriman: {{ request.user.address.full_address }}</p>
-    <p>Kurir: {{ shipment }}</p>
-    <p>Metode Pembayaran: {{ payment }}</p>
-    <h2>Order Summary</h2>
-    <ul>
-        {% if book %}
-            <li>{{ book.title }} - 1 x {{ book.price }}</li>
-            <p>Total harga: {{ book.price }}</p>
-        {% else %}
-            {% for item in order_items %}
-                <li>{{ item.book.title }} - {{ item.quantity }} x {{ item.book.price }}</li>
-            {% endfor %}
-            <p>Total harga: {{ total_price }}</p>
-        {% endif %}
-    </ul>
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Informasi Pengiriman</h2>
+        </div>
+        <div class="card-body">
+            <p><strong>Alamat Pengiriman:</strong> {{ request.user.address.full_address }}</p>
+            <p><strong>Kurir:</strong> {{ shipment }}</p>
+            <p><strong>Metode Pembayaran:</strong> {{ payment }}</p>
+        </div>
+    </div>
 
-    <h3>Mohon lakukan pembayaran</h3>
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Order Summary</h2>
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                {% if book %}
+                    <li class="list-group-item">
+                        {{ book.title }} - 1 x {{ book.price }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Total harga: {{ book.price }}</strong>
+                    </li>
+                {% else %}
+                    {% for item in order_items %}
+                        <li class="list-group-item">
+                            {{ item.book.title }} - {{ item.quantity }} x {{ item.book.price }}
+                        </li>
+                    {% endfor %}
+                    <li class="list-group-item">
+                        <strong>Total harga: {{ total_price }}</strong>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+    <h3 class="mb-4">Mohon lakukan pembayaran</h3>
+</div>
 
 {% endblock %}

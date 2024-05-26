@@ -1,238 +1,179 @@
-{% extends "bookcommerce/base.html" %} {% load static %} {% block content %}
+{% extends "bookcommerce/base.html" %}
+{% load static %} {% load humanize %}
 
-<div class="container mb-4">
-    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button
-                class="nav-link active"
-                id="pills-product-tab"
-                data-bs-toggle="pill"
-                data-bs-target="#pills-product"
-                type="button"
-                role="tab"
-                aria-controls="pills-product"
-                aria-selected="true"
-            >
-                Product
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button
-                class="nav-link"
-                id="pills-author-tab"
-                data-bs-toggle="pill"
-                data-bs-target="#pills-author"
-                type="button"
-                role="tab"
-                aria-controls="pills-author"
-                aria-selected="false"
-            >
-                Penulis
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button
-                class="nav-link"
-                id="pills-series-tab"
-                data-bs-toggle="pill"
-                data-bs-target="#pills-series"
-                type="button"
-                role="tab"
-                aria-controls="pills-series"
-                aria-selected="false"
-            >
-                Series
-            </button>
-        </li>
-    </ul>
-    <div class="row tab-content mt-4" id="pills-tabContent">
-        <div
-            class="col tab-pane fade show active"
-            id="pills-product"
-            role="tabpanel"
-            aria-labelledby="pills-product-tab"
-            tabindex="0"
-        >
-            <div class="row gap-2">
-                <div class="col-12 col-md p-3 rounded border shadow">
-                    <div class="text-center mb-2">
-                        <img
-                            src="{% static '/bookcommerce/img/buku2.png' %}"
-                            class="img-fluid"
-                            alt=""
-                        />
-                    </div>
-                    <p class="m-0 fw-bold">The Hunger Games</p>
-                    <p class="m-0 text-body-secondary"><small>Suzanne Collins</small></p>
-                    <p class="m-0 fw-bold"><small>Rp 98.000</small></p>
-                    <button class="mt-2 btn btn-primary btn-sm w-100">
-                        <i class="bi bi-cart"></i> Masukkan ke Keranjang
-                    </button>
-                </div>
-                <div class="col-12 col-md p-3 rounded border shadow">
-                    <div class="text-center mb-2">
-                        <img
-                            src="{% static '/bookcommerce/img/buku2.png' %}"
-                            class="img-fluid"
-                            alt=""
-                        />
-                    </div>
-                    <p class="m-0 fw-bold">The Hunger Games</p>
-                    <p class="m-0 text-body-secondary"><small>Suzanne Collins</small></p>
-                    <p class="m-0 fw-bold"><small>Rp 98.000</small></p>
-                    <button class="mt-2 btn btn-primary btn-sm w-100">
-                        <i class="bi bi-cart"></i> Masukkan ke Keranjang
-                    </button>
-                </div>
-                <div class="col-12 col-md p-3 rounded border shadow">
-                    <div class="text-center mb-2">
-                        <img
-                            src="{% static '/bookcommerce/img/buku2.png' %}"
-                            class="img-fluid"
-                            alt=""
-                        />
-                    </div>
-                    <p class="m-0 fw-bold">The Hunger Games</p>
-                    <p class="m-0 text-body-secondary"><small>Suzanne Collins</small></p>
-                    <p class="m-0 fw-bold"><small>Rp 98.000</small></p>
-                    <button class="mt-2 btn btn-primary btn-sm w-100">
-                        <i class="bi bi-cart"></i> Masukkan ke Keranjang
-                    </button>
-                </div>
-                <div class="col-12 col-md p-3 rounded border shadow">
-                    <div class="text-center mb-2">
-                        <img
-                            src="{% static '/bookcommerce/img/buku2.png' %}"
-                            class="img-fluid"
-                            alt=""
-                        />
-                    </div>
-                    <p class="m-0 fw-bold">The Hunger Games</p>
-                    <p class="m-0 text-body-secondary"><small>Suzanne Collins</small></p>
-                    <p class="m-0 fw-bold"><small>Rp 98.000</small></p>
-                    <button class="mt-2 btn btn-primary btn-sm w-100">
-                        <i class="bi bi-cart"></i> Masukkan ke Keranjang
-                    </button>
-                </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col">Menampilkan 1 dari 3 produk</div>
-                <div class="col text-end">&lt; 1/1 &gt;</div>
-            </div>
-        </div>
-        <div
-            class="col tab-pane fade"
-            id="pills-author"
-            role="tabpanel"
-            aria-labelledby="pills-author-tab"
-            tabindex="0"
-        >
-            <div class="row">
-                <div class="col-12 col-md-3 text-center">
-                    <img
-                        src="{% static '/bookcommerce/assets/author.svg' %}"
-                        class="img-fluid mb-3"
-                        alt=""
-                    />
-                    <p>Suzanne Collins</p>
-                </div>
-                <div class="col-12 col-md-3 text-center">
-                    <img
-                        src="{% static '/bookcommerce/assets/author.svg' %}"
-                        class="img-fluid mb-3"
-                        alt=""
-                    />
-                    <p>Suzanne Collins</p>
-                </div>
-                <div class="col-12 col-md-3 text-center">
-                    <img
-                        src="{% static '/bookcommerce/assets/author.svg' %}"
-                        class="img-fluid mb-3"
-                        alt=""
-                    />
-                    <p>Suzanne Collins</p>
-                </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col">Menampilkan 1 dari 3 penulis</div>
-                <div class="col text-end">&lt; 1/1 &gt;</div>
-            </div>
-        </div>
-        <div
-            class="col tab-pane fade"
-            id="pills-series"
-            role="tabpanel"
-            aria-labelledby="pills-series-tab"
-            tabindex="0"
-        >
-            <div class="row gap-2">
-                <div class="col-12 col-md p-3 rounded border shadow">
-                    <div class="text-center mb-2">
-                        <img
-                            src="{% static '/bookcommerce/img/buku2.png' %}"
-                            class="img-fluid"
-                            alt=""
-                        />
-                    </div>
-                    <p class="m-0 fw-bold">The Hunger Games</p>
-                    <p class="m-0 text-body-secondary"><small>Suzanne Collins</small></p>
-                    <p class="m-0 fw-bold"><small>Rp 98.000</small></p>
-                    <button class="mt-2 btn btn-primary btn-sm w-100">
-                        <i class="bi bi-cart"></i> Masukkan ke Keranjang
-                    </button>
-                </div>
-                <div class="col-12 col-md p-3 rounded border shadow">
-                    <div class="text-center mb-2">
-                        <img
-                            src="{% static '/bookcommerce/img/buku2.png' %}"
-                            class="img-fluid"
-                            alt=""
-                        />
-                    </div>
-                    <p class="m-0 fw-bold">The Hunger Games</p>
-                    <p class="m-0 text-body-secondary"><small>Suzanne Collins</small></p>
-                    <p class="m-0 fw-bold"><small>Rp 98.000</small></p>
-                    <button class="mt-2 btn btn-primary btn-sm w-100">
-                        <i class="bi bi-cart"></i> Masukkan ke Keranjang
-                    </button>
-                </div>
-                <div class="col-12 col-md p-3 rounded border shadow">
-                    <div class="text-center mb-2">
-                        <img
-                            src="{% static '/bookcommerce/img/buku2.png' %}"
-                            class="img-fluid"
-                            alt=""
-                        />
-                    </div>
-                    <p class="m-0 fw-bold">The Hunger Games</p>
-                    <p class="m-0 text-body-secondary"><small>Suzanne Collins</small></p>
-                    <p class="m-0 fw-bold"><small>Rp 98.000</small></p>
-                    <button class="mt-2 btn btn-primary btn-sm w-100">
-                        <i class="bi bi-cart"></i> Masukkan ke Keranjang
-                    </button>
-                </div>
-                <div class="col-12 col-md p-3 rounded border shadow">
-                    <div class="text-center mb-2">
-                        <img
-                            src="{% static '/bookcommerce/img/buku2.png' %}"
-                            class="img-fluid"
-                            alt=""
-                        />
-                    </div>
-                    <p class="m-0 fw-bold">The Hunger Games</p>
-                    <p class="m-0 text-body-secondary"><small>Suzanne Collins</small></p>
-                    <p class="m-0 fw-bold"><small>Rp 98.000</small></p>
-                    <button class="mt-2 btn btn-primary btn-sm w-100">
-                        <i class="bi bi-cart"></i> Masukkan ke Keranjang
-                    </button>
-                </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col">Menampilkan 1 dari 3 produk</div>
-                <div class="col text-end">&lt; 1/1 &gt;</div>
-            </div>
+{% block content %}
+
+<div class="container my-4">
+    <div class="row">
+        <div class="col" style="--bs-breadcrumb-divider: '>'">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Pencarian</li>
+                </ol>
+            </nav>
         </div>
     </div>
+    {% if search_tag %}
+        <h4>Hasil pencarian untuk "{{ search }}" pada kategori 
+            {% if search_tag == 'books' %}
+                buku
+            {% elif search_tag == 'authors' %}
+                penulis
+            {% elif search_tag == 'series' %}
+                series
+            {% endif %}
+        </h4>
+        <ul class="nav nav-pills my-3" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button
+                    class="nav-link {% if search_tag == 'books' %}active{% endif %}"
+                    id="pills-product-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#pills-product"
+                    type="button"
+                    role="tab"
+                    aria-controls="pills-product"
+                    aria-selected="{% if search_tag == 'books' %}true{% else %}false{% endif %}"
+                >
+                    Buku
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button
+                    class="nav-link {% if search_tag == 'authors' %}active{% endif %}"
+                    id="pills-author-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#pills-author"
+                    type="button"
+                    role="tab"
+                    aria-controls="pills-author"
+                    aria-selected="{% if search_tag == 'authors' %}true{% else %}false{% endif %}"
+                >
+                    Penulis
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button
+                    class="nav-link {% if search_tag == 'series' %}active{% endif %}"
+                    id="pills-series-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#pills-series"
+                    type="button"
+                    role="tab"
+                    aria-controls="pills-series"
+                    aria-selected="{% if search_tag == 'series' %}true{% else %}false{% endif %}"
+                >
+                    Series
+                </button>
+            </li>
+        </ul>
+
+        <div class="row tab-content mt-4" id="pills-tabContent">
+            <div
+                class="col tab-pane fade {% if search_tag == 'books' %}show active{% endif %}"
+                id="pills-product"
+                role="tabpanel"
+                aria-labelledby="pills-product-tab"
+                tabindex="0"
+            >
+                {% if search_tag == 'books' %}
+                    {% if found_books %}
+                        <div class="row gap-2">
+                            {% for book in found_books %}
+                                <div class="col-12 col-md-4 col-lg-3 p-3 rounded border shadow">
+                                    <div class="text-center mb-2">
+                                        <img
+                                            src="{{ book.cover_img.url }}"
+                                            alt="{{ book.title }}"
+                                            class="card-img-top img-fluid"
+                                            style="height: 300px; object-fit: cover; border-radius: 8px;"
+                                        />
+                                    </div>
+                                    <p class="m-0 fw-bold">{{ book.title }}</p>
+                                    <p class="m-0 text-body-secondary"><small>{{ book.author }}</small></p>
+                                    <p class="m-0 fw-bold"><small>{{ book.price|intcomma }}</small></p>
+                                    <form action="{% url 'add_to_cart' book.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <button type="submit" class="mt-2 btn btn-primary btn-sm w-100">
+                                            <i class="bi bi-cart"></i> Tambahkan ke Keranjang
+                                        </button>
+                                    </form>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p>Buku tidak ditemukan</p>
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            <div
+                class="col tab-pane fade {% if search_tag == 'authors' %}show active{% endif %}"
+                id="pills-author"
+                role="tabpanel"
+                aria-labelledby="pills-author-tab"
+                tabindex="0"
+            >
+                {% if search_tag == 'authors' %}
+                    {% if found_authors %}
+                        <div class="row gap-2">
+                            {% for author in found_authors %}
+                                <div class="col-12 col-md-3 text-center">
+                                    <img
+                                        src="{{ author.author_img.url }}"
+                                        alt="{{ author.name }}"
+                                        class="card-img-top img-fluid rounded-circle mb-3"
+                                        style="height: 250px; object-fit: cover;"
+                                    />
+                                    <p class="mb-1 fw-bold">{{ author.name }}</p>
+                                    <p>{{ author.nationality }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p>Penulis tidak ditemukan</p>
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            <div
+                class="col tab-pane fade {% if search_tag == 'series' %}show active{% endif %}"
+                id="pills-series"
+                role="tabpanel"
+                aria-labelledby="pills-series-tab"
+                tabindex="0"
+            >
+                {% if search_tag == 'series' %}
+                    {% if found_series %}
+                        <div class="row gap-2">
+                            {% for series in found_series %}
+                                <div class="col-12 col-md-4 col-lg-3 p-3 rounded border shadow">
+                                    <div class="text-center mb-2">
+                                        <img
+                                            src="{{ series.cover_img.url }}"
+                                            alt="{{ series.name }}"
+                                            class="card-img-top img-fluid"
+                                            style="height: 300px; object-fit: cover; border-radius: 8px;"
+                                        />
+                                    </div>
+                                    <p class="m-0 fw-bold">{{ series.name }}</p>
+                                    <form action="{% url 'add_to_cart' book.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <button type="submit" class="mt-2 btn btn-primary btn-sm w-100">
+                                            <i class="bi bi-cart"></i> Tambahkan ke Keranjang
+                                        </button>
+                                    </form>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p>Series tidak ditemukan</p>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
 </div>
 
 {% endblock content %}

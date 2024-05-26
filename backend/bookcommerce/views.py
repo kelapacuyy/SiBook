@@ -2,13 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, View
 from django.views.decorators.http import require_POST
 from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import update_session_auth_hash, authenticate, login
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 from .models import Author, Series, Book, Cart, CartItem, Order, OrderItem, Shipment, Payment, Address
-from .forms import UserRegisterForm, AddressForm, ProfilePictureForm, CustomPasswordChangeForm
+from .forms import UserRegisterForm, UserLoginForm, AddressForm, ProfilePictureForm, CustomPasswordChangeForm
 
 
 def register(request):
@@ -22,6 +22,22 @@ def register(request):
     else:
         form = UserRegisterForm()
     return render(request, 'bookcommerce/register.html', {'form': form})
+
+def user_login(request):
+    if request.method == 'POST':
+        form = UserLoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+            else:
+                return render(request, 'Username atau password salah')
+    else:
+        form = UserLoginForm()
+    return render(request, 'bookcommerce/login.html', {'form': form})
 
 class CustomLoginView(LoginView):
     redirect_authenticated_user = True
@@ -273,4 +289,5 @@ def search(request):
         else:
             context = { 'search_tag': search_tag }
         return render(request, 'bookcommerce/search.html', context)
-    return redirect(reverse('home'))
+    # return redirect(reverse('home'))
+    return render(request, 'bookcommerce/search.html')

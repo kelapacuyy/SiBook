@@ -1,24 +1,91 @@
 {% extends "bookcommerce/base.html" %}
+{% load static %} {% load humanize %}
 {% block content %}
-<h1>Order History</h1>
 
-<ul>
-    {% for order, total_price in orders_with_total %}
-        <li>
-            <p>Order ID: {{ order.id }}</p>
-            <p>Date: {{ order.order_date }}</p>
-            <p>Status: {{ order.status }}</p>
-            <p>Total Harga: {{ total_price }}</p>
-            <ul>
-                {% for item in order.items.all %}
-                    <li>{{ item.book.title }} - {{ item.quantity }} x {{ item.book.price }}</li>
+<div class="container">
+    <div class="row">
+        <div class="col" style="--bs-breadcrumb-divider: '>'">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Pesanan Saya</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-3">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <img
+                        src="{{ user.profile_picture.url }}"
+                        alt="Profile Picture"
+                        class="rounded-circle"
+                        style="max-width: 60px;"
+                    />
+                </div>
+                <div class="col">
+                    <h4 class="m-0">{{ user.username }}</h4>
+                </div>                    
+            </div>
+            <div class="row align-items-center my-4">
+                <a href="{% url 'profile' %}" class="link-body-emphasis text-decoration-none my-2">
+                    <h6><i class="bi bi-person text-primary"></i> Akun Saya</h6>
+                </a>
+                <a href="{% url 'order_history' %}" class="link-body-emphasis text-decoration-none my-2">
+                    <h6 class="fw-bold"><i class="bi bi-file-text-fill text-primary"></i> Pesanan Saya</h6>
+                </a>
+                <a href="{% url 'logout' %}" class="link-body-emphasis text-decoration-none my-2">
+                    <h6><i class="bi bi-box-arrow-left text-primary"></i> Logout</h6>
+                </a>
+            </div>      
+        </div>
+        <div class="col-12 col-md-9 px-4 py-3 border rounded">
+            <div class="row">
+                <div class="col">
+                    <h5 class="fw-bold mt-3">Pesanan Saya</h5>
+                </div>
+            </div>
+            <hr />
+
+            <div>
+                {% for order, total_price in orders_with_total %}
+                <div class="row">
+                    <div class="col mb-3">
+                        <p class="m-0 fw-bold">Order ID: {{ order.id }}</p>
+                        <p class="m-0 text-body-secondary">Date: {{ order.order_date }}</p>
+                    </div>
+                    <div class="col text-end">
+                        <p class="text-danger fw-bold">{{ order.status }}</p>
+                        <h6 class="text-body-tertiary align-self-end">
+                            Total Harga: <strong class="text-black">{{ total_price|intcomma }}</strong>
+                        </h6>
+                    </div>
+                    {% for item in order.items.all %}
+                    <div class="row align-items-end">
+                        <div class="col-2 col-md-auto mb-3">
+                            <img
+                                src="{{ item.book.cover_img.url }}"
+                                alt=""
+                                class="img-fluid img-thumbnail"
+                                style="max-width: 100px;"
+                            />
+                        </div>
+                        <div class="col">
+                            <p class="mb-1">{{ item.book.title }}</p>
+                            <p>{{ item.quantity }} x {{ item.book.price|intcomma }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <hr />
+                </div>
                 {% endfor %}
-            </ul>
-        </li>
-    {% endfor %}
-</ul>
+                
+                {% if not orders_with_total %}
+                    <p>Kamu belum memiliki pesanan</p>
+                {% endif %}
+        </div>
+    </div>
+</div>
 
-{% if not orders_with_total %}
-    <p>Belum ada order.</p>
-{% endif %}
 {% endblock %}

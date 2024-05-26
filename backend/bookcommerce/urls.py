@@ -20,7 +20,7 @@ urlpatterns = [
     path('address/create/', create_address, name='create_address'),
     path('address/update/<int:address_id>/', update_address, name='update_address'),
     path('profile/change-password/', change_password, name='change_password'),
-    path('search', SearchView.as_view(), name='search'),
+    path('search/', search, name='search'),
     path('order', OrderStaticView.as_view(), name='order_static')
 ]
 
