@@ -1,15 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, View
+from django.views.generic import ListView, View, UpdateView, DeleteView
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash, authenticate, login
 from django.contrib.auth.views import LoginView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
-from .models import Author, Series, Book, Cart, CartItem, Order, OrderItem, Shipment, Payment, Address
-from .forms import UserRegisterForm, UserLoginForm, AddressForm, ProfilePictureForm, CustomPasswordChangeForm
+from .models import Author, Series, Book, Cart, CartItem, Order, OrderItem, Shipment, Payment, Address, Review
+from .forms import UserRegisterForm, UserLoginForm, AddressForm, ProfilePictureForm, CustomPasswordChangeForm, ReviewForm
 
+
+# User related views
 
 def register(request):
     if request.method == 'POST':
@@ -46,6 +49,8 @@ class CustomLoginView(LoginView):
     def get_success_url(self):
         return self.success_url
 
+# Book related views
+
 class BookListView(ListView):
     model = Book
     template_name = 'bookcommerce/index.html'
@@ -57,12 +62,86 @@ class BookDetailView(View):
         book = Book.objects.get(pk=pk)
         self.current_book = book
 
+        review_form = ReviewForm()
+        reviews = Review.objects.filter(book=book).order_by('-like')
+
         context = {
             'book': book,
+            'review_form': review_form,
+            'reviews': reviews,
         }
 
         return render(request, 'bookcommerce/book_detail.html', context)
+
+    def post(self, request, pk, *args, **kwargs):
+        book = Book.objects.get(pk=pk)
+                
+        review_form = ReviewForm(request.POST)
+        
+        if review_form.is_valid() and 'review_submit' in request.POST:
+            new_review = review_form.save(commit=False)
+            new_review.author = request.user
+            new_review.book = book
+            new_review.save()
+            messages.success(request, f"Berhasil menambahkan ulasan!")
+        else:
+            messages.error(request, f"Gagal menambahkan ulasan!")
+        
+        review_form = ReviewForm()
+        reviews = book.reviews.all().order_by('-like')
+
+        context = {
+            'book': book,
+            'review_form': review_form,
+            'reviews': reviews,
+        }
+
+        return render(request, 'bookcommerce/book_detail.html', context)
+
+# Review related views
+
+class ReviewUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Review
+    fields = ['content']
+    template_name = 'bookcommerce/review_form_update.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['review'] = get_object_or_404(Review, pk=self.kwargs['pk'])
+        return context
     
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        messages.success(self.request, "Berhasil mengedit ulasan!")
+        return super().form_valid(form)
+    
+    def test_func(self):
+        review = self.get_object()
+        return self.request.user == review.author
+
+    def get_success_url(self):
+        review = get_object_or_404(Review, pk=self.kwargs['pk'])
+        book = get_object_or_404(Book, pk=review.book.pk)
+        return reverse('bookcommerce-book-detail', args=[book.pk])
+
+class ReviewDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Review
+    template_name = 'bookcommerce/review_confirm_delete.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['review'] = get_object_or_404(Review, pk=self.kwargs['pk'])
+        return context
+
+    def test_func(self):
+        review = self.get_object()
+        return self.request.user == review.author
+
+    def get_success_url(self):
+        review = self.get_object()
+        book = review.book
+        return reverse('bookcommerce-book-detail', args=[book.pk])
+
 class CartStaticView(View):
     def get(self, request):
         return render(request, 'bookcommerce/cart_detail_static.html')

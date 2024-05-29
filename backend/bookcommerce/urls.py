@@ -1,6 +1,6 @@
 from django.urls import path, include
 from . import views
-from .views import BookListView, BookDetailView, add_to_cart, cart_detail, update_cart_item, delete_cart_item, delete_all_cart_items, checkout, payment, profile, order_history, create_address, update_address, change_password, search, CartStaticView, SearchView, OrderStaticView
+from .views import BookListView, BookDetailView, add_to_cart, cart_detail, update_cart_item, delete_cart_item, delete_all_cart_items, checkout, payment, profile, order_history, create_address, update_address, change_password, search, CartStaticView, SearchView, OrderStaticView, ReviewUpdateView, ReviewDeleteView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -21,7 +21,9 @@ urlpatterns = [
     path('address/update/<int:address_id>/', update_address, name='update_address'),
     path('profile/change-password/', change_password, name='change_password'),
     path('search/', search, name='search'),
-    path('order', OrderStaticView.as_view(), name='order_static')
+    path('order/', OrderStaticView.as_view(), name='order_static'),
+    path('books/review/<int:pk>/update/', ReviewUpdateView.as_view(), name='bookcommerce-review-update'),
+    path('books/review/<int:pk>/delete/', ReviewDeleteView.as_view(), name='bookcommerce-review-delete'),
 ]
 
 if settings.DEBUG:

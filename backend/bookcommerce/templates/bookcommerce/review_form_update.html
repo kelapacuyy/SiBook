@@ -1,0 +1,12 @@
+{% extends "bookcommerce/base.html" %} {% load static %} {% block content %}
+
+<div class="col-12 mt-4">
+    <h3>Edit Ulasan</h3>
+    <form action="{% url 'bookcommerce-review-update' review.pk %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary" type="submit">Perbarui Ulasan</button>
+    </form>
+</div>
+
+{% endblock content %}

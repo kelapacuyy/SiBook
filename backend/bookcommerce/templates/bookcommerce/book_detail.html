@@ -138,6 +138,7 @@
         </div>
     </div>
     <hr />
+
     <div class="row my-5">
         <div class="col">
             <h2 class="fw-bold">Ulasan dan Penilaian</h2>
@@ -152,63 +153,52 @@
                 </h2>
             </div>
         </div>
+
         <div class="col-12 mt-4">
-            <div class="row mt-3">
-                <div class="col-auto">
-                    <img src="{% static '/bookcommerce/assets/user.svg' %}" alt="User" />
-                </div>
-                <div class="col">
-                    <p class="m-0">User_123</p>
-                    <div class="text-warning">
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
+            <h3>Tulis Ulasan</h3>
+            <form action="{% url 'bookcommerce-book-detail' book.id %}" method="POST">
+                {% csrf_token %}
+                {{ review_form.as_p }}
+                <button class="btn btn-primary" type="submit" name="review_submit">Submit Ulasan</button>
+            </form>
+        </div>
+
+        <div class="col-12 mt-4">
+            <h3>Ulasan</h3>
+            {% for review in reviews %}
+                <div class="row mt-3">
+                    <div class="col-auto">
+                        <img
+                            src="{{ user.profile_picture.url }}"
+                            alt="Profile Picture"
+                            class="rounded-circle"
+                            style="max-width: 60px;"
+                        />
                     </div>
-                    <p class="text-body-tertiary">2023-08-29 01:39</p>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, aliquid
-                        quidem quibusdam numquam qui, ipsum quis praesentium omnis beatae molestias
-                        voluptatem accusamus quae facilis reiciendis? Deleniti, tempore!
-                        Exercitationem dicta libero amet! Ratione tempora quia autem dolorum
-                        inventore adipisci vitae incidunt nihil rerum eius architecto consequatur
-                        iusto, nemo non reiciendis alias.
-                    </p>
-                    <button class="btn text-body-tertiary">
-                        <i class="bi bi-hand-thumbs-up-fill"></i> 1
-                    </button>
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-auto">
-                    <img src="{% static '/bookcommerce/assets/user.svg' %}" alt="User" />
-                </div>
-                <div class="col">
-                    <p class="m-0">User_123</p>
-                    <div class="text-warning">
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
+                    <div class="col">
+                        <p class="m-0">{{ review.author.username }}</p>
+                        <div class="text-warning">
+                            {% with ''|center:review.rating as range %}
+                            {% for _ in range %}
+                                <i class="bi bi-star-fill"></i>
+                            {% endfor %}
+                            {% endwith %}
+                        </div>
+                        <p class="text-body-tertiary">{{ review.date_posted }}</p>
+                        <p>{{ review.content }}</p>
+                        <button class="btn text-body-tertiary">
+                            <i class="bi bi-hand-thumbs-up-fill"></i> {{ review.like }}
+                        </button>
+                        {% if review.author == user %}
+                            <a class="" href="{% url 'bookcommerce-review-update' review.pk %}">Edit</a>
+                            <a class="" href="{% url 'bookcommerce-review-delete' review.pk %}">Hapus</a>
+                        {% endif %}
                     </div>
-                    <p class="text-body-tertiary">2023-08-29 01:39</p>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, aliquid
-                        quidem quibusdam numquam qui, ipsum quis praesentium omnis beatae molestias
-                        voluptatem accusamus quae facilis reiciendis? Deleniti, tempore!
-                        Exercitationem dicta libero amet! Ratione tempora quia autem dolorum
-                        inventore adipisci vitae incidunt nihil rerum eius architecto consequatur
-                        iusto, nemo non reiciendis alias.
-                    </p>
-                    <button class="btn text-body-tertiary">
-                        <i class="bi bi-hand-thumbs-up-fill"></i> 1
-                    </button>
                 </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
+
 </div>
 
 {% endblock content %}

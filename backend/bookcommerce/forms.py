@@ -1,5 +1,5 @@
 from django import forms
-from .models import Customer, Address
+from .models import Customer, Address, Review
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, AuthenticationForm
 from django.contrib.auth import authenticate
 from django.forms import ClearableFileInput
@@ -85,3 +85,12 @@ class CustomPasswordChangeForm(PasswordChangeForm):
     old_password = forms.CharField(widget=forms.PasswordInput, help_text='')
     new_password1 = forms.CharField(widget=forms.PasswordInput, help_text='')
     new_password2 = forms.CharField(widget=forms.PasswordInput, help_text='')
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['rating', 'content']
+        widgets = {
+            'rating': forms.NumberInput(attrs={'min': 1, 'max': 5, 'step': 1, 'class': 'form-control'}),
+            'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Write your review here...'}),
+        }
