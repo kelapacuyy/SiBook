@@ -25,7 +25,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col">
-                        <p class="d-inline">Follow us:</p>
+                        <p class="d-inline">Ikuti Kami:</p>
                         <a href="#" class="btn btn-light rounded-pill text-body-secondary">
                             <i class="bi bi-facebook"></i>
                         </a>
@@ -38,7 +38,7 @@
                     </div>
                     <div class="col text-end">
                         {% if user.is_authenticated %}
-                            <p class="mt-2">Selamat datang, {{ user.username }}</p>
+                            <p class="mt-2">Halo, {{ user.username }}!</p>
                         {% else %}
                             <a href="#" class="btn btn-link text-white">Butuh bantuan?</a>
                         {% endif %}

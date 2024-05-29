@@ -8,6 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
+from django.db.models import Avg
 from .models import Author, Series, Book, Cart, CartItem, Order, OrderItem, Shipment, Payment, Address, Review
 from .forms import UserRegisterForm, UserLoginForm, AddressForm, ProfilePictureForm, CustomPasswordChangeForm, ReviewForm
 
@@ -64,11 +65,13 @@ class BookDetailView(View):
 
         review_form = ReviewForm()
         reviews = Review.objects.filter(book=book).order_by('-like')
+        average_rating = self.average_rating(pk)
 
         context = {
             'book': book,
             'review_form': review_form,
             'reviews': reviews,
+            'average_rating': round(average_rating, 1),
         }
 
         return render(request, 'bookcommerce/book_detail.html', context)
@@ -94,10 +97,17 @@ class BookDetailView(View):
             'book': book,
             'review_form': review_form,
             'reviews': reviews,
+            'average_rating': round(self.average_rating(pk), 1),
         }
 
         return render(request, 'bookcommerce/book_detail.html', context)
 
+    def average_rating(self, book_id):
+        book = get_object_or_404(Book, pk=book_id)
+        reviews = Review.objects.filter(book=book)
+        average_rating = reviews.aggregate(Avg('rating'))['rating__avg'] or 0
+        return average_rating
+    
 # Review related views
 
 class ReviewUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -227,13 +237,22 @@ def checkout(request):
     cart = Cart.objects.get(customer=request.user)
     book = Book.objects.get(id=book_id) if book_id else None
 
+    # Harga pengiriman yang dipilih
+    shipment_price = None
+    shipment_id = request.POST.get('shipment')
+    if shipment_id:
+        shipment = get_object_or_404(Shipment, id=shipment_id)
+        shipment_price = shipment.price
+
     return render(request, 'bookcommerce/checkout.html', {
         'shipments': shipments,
         'payments': payments,
         'cart_items': cart.items.all(),
         'total_price': sum(item.book.price * item.quantity for item in cart.items.all()),
         'book': book,
+        'shipment_price': shipment_price,
     })
+
 
 @login_required
 def payment(request):

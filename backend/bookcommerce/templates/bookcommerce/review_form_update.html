@@ -1,12 +1,16 @@
-{% extends "bookcommerce/base.html" %} {% load static %} {% block content %}
+{% extends "bookcommerce/base.html" %}
+{% load static %}
+{% load widget_tweaks %}
 
-<div class="col-12 mt-4">
-    <h3>Edit Ulasan</h3>
-    <form action="{% url 'bookcommerce-review-update' review.pk %}" method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button class="btn btn-primary" type="submit">Perbarui Ulasan</button>
-    </form>
+{% block content %}
+<div class="container">
+    <div class="col-12 mt-4">
+        <h3>Edit Ulasan</h3>
+        <form action="{% url 'bookcommerce-review-update' review.pk %}" method="POST">
+            {% csrf_token %}
+            {{ form.content|add_class:"form-control" }}
+            <button class="btn btn-primary mt-3" type="submit">Perbarui Ulasan</button>
+        </form>
+    </div>
 </div>
-
 {% endblock content %}

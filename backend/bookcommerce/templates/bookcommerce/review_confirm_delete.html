@@ -1,36 +1,39 @@
 {% extends "bookcommerce/base.html" %} {% load static %} {% block content %}
 
-<div class="col-12 mt-4">
-    <h3>Hapus Ulasan</h3>
-    <form method="POST">
-        {% csrf_token %}
-        <fieldset>
-            <legend>Hapus ulasan</legend>
-            <h2>Apakah anda ingin menghapus ulasan ini?</h2>
-            <div class="row mt-3">
-                <div class="col-auto">
-                    <img src="{{ review.author.profile_picture.url }}" alt="Profile Picture" class="rounded-circle" style="max-width: 60px;" />
-                </div>
-                <div class="col">
-                    <p class="m-0">{{ review.author.username }}</p>
-                    <div class="text-warning">
-                        {% with ''|center:review.rating as range %}
-                        {% for _ in range %}
-                        <i class="bi bi-star-fill"></i>
-                        {% endfor %}
-                        {% endwith %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 mt-4">
+            <h3>Hapus Ulasan</h3>
+            <form method="POST">
+                {% csrf_token %}
+                <fieldset>
+                    <h5>Apakah anda ingin menghapus ulasan ini?</h5>
+                    <div class="row mt-3">
+                        <div class="col-auto">
+                            <img src="{{ review.author.profile_picture.url }}" alt="Profile Picture" class="rounded-circle" style="max-width: 60px;" />
+                        </div>
+                        <div class="col">
+                            <p class="m-0">{{ review.author.username }}</p>
+                            <div class="text-warning">
+                                {% with ''|center:review.rating as range %}
+                                {% for _ in range %}
+                                <i class="bi bi-star-fill"></i>
+                                {% endfor %}
+                                {% endwith %}
+                            </div>
+                            <p class="text-body-tertiary">{{ review.date_posted }}</p>
+                            <p>{{ review.content }}</p>
+                            <button class="btn text-body-tertiary"><i class="bi bi-hand-thumbs-up-fill"></i> {{ review.like }}</button>
+                        </div>
                     </div>
-                    <p class="text-body-tertiary">{{ review.date_posted }}</p>
-                    <p>{{ review.content }}</p>
-                    <button class="btn text-body-tertiary"><i class="bi bi-hand-thumbs-up-fill"></i> {{ review.like }}</button>
+                </fieldset>
+                <div>
+                    <button class="btn btn-outline-danger" type="submit">Hapus ulasan</button>
+                    <a class="btn btn-outline-primary" href="{% url 'bookcommerce-book-detail' review.book.id %}">Batal</a>
                 </div>
-            </div>
-        </fieldset>
-        <div>
-            <button class="btn btn-outline-danger" type="submit">Hapus ulasan</button>
-            <a class="btn btn-outline-primary" href="{% url 'bookcommerce-book-detail' review.book.id %}">Batal</a>
+            </form>
         </div>
-    </form>
+    </div>
 </div>
 
 {% endblock content %}

@@ -1,10 +1,19 @@
 {% extends "bookcommerce/base.html" %}
 
 {% block content %}
-    <div>
-        <h3>Anda sudah log out</h3>
-        <small>
-            <a href="{% url 'login' %}">Log in lagi?</a>
-        </small>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card mt-5">
+                <div class="card-body">
+                    <h3 class="card-title text-center">Anda sudah log out</h3>
+                    <div class="text-center mt-3">
+                        <a href="{% url 'home' %}" class="btn btn-primary">Kembali ke halaman utama</a>
+                        <a href="{% url 'login' %}" class="btn btn-outline-primary">Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 {% endblock content %}
