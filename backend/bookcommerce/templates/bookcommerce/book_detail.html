@@ -163,8 +163,9 @@
                 <span class="text-black">{{ average_rating }} dari 5.0</span>
             </h4>
         </div>
-    </div>
-
+    </div> 
+    
+    {% if user.is_authenticated %}
         <div class="col-12 mt-4">
             <h4>Tulis Rating dan Ulasan</h4>
             <form action="{% url 'bookcommerce-book-detail' book.id %}" method="POST">
@@ -180,6 +181,7 @@
                 <button class="btn btn-primary mt-3" type="submit" name="review_submit">Kirim Ulasan</button>
             </form>
         </div>
+    {% endif %}
 
         <div class="col-12 mt-4">
             <h3>Ulasan</h3>
