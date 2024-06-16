@@ -1,6 +1,12 @@
 {% extends "bookcommerce/base.html" %}
 {% load static %} {% load widget_tweaks %}
 {% block content %}
+<style>
+  .custom-placeholder::placeholder {
+    color: #aaa;
+    opacity: 0.75;
+}
+</style>
 
 <div class="container">
     <div class="row">
@@ -9,7 +15,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/">Beranda</a></li>
                     <li class="breadcrumb-item"><a href="{% url 'profile' %}">Akun Saya</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Ubah Kata Sandi</li>
+                    <li class="breadcrumb-item active" aria-current="page">{% if form.instance.pk %}Ubah Alamat{% else %}Tambah Alamat{% endif %}</li>
                 </ol>
             </nav>
         </div>
@@ -44,7 +50,7 @@
         <div class="col-12 col-md-9 px-4 py-3 border rounded">
             <div class="row">
                 <div class="col">
-                    <h5 class="fw-bold mt-3">Ubah Kata Sandi</h5>
+                    <h5 class="fw-bold mt-3">{% if form.instance.pk %}Ubah Alamat{% else %}Tambah Alamat{% endif %}</h5>
                 </div>
             </div>
             <hr />
@@ -52,16 +58,36 @@
               <form method="POST">
                 {% csrf_token %}
                 <div class="mb-3">
-                  <label for="exampleInputText1" class="form-label fw-bold">Kata Sandi Lama</label>
-                  {{ form.old_password|add_class:"form-control" }}
+                  <label for="exampleInputText1" class="form-label fw-bold">Nama Tempat</label>
+                  {{ form.label|add_class:"form-control" }}
                 </div>
                 <div class="mb-3">
-                  <label for="exampleInputText1" class="form-label fw-bold">Kata Sandi Baru</label>
-                  {{ form.new_password1|add_class:"form-control" }}
+                  <label for="exampleInputText1" class="form-label fw-bold">Nama Penerima</label>
+                  {{ form.receiver_name|add_class:"form-control" }}
                 </div>
                 <div class="mb-3">
-                  <label for="exampleInputText1" class="form-label fw-bold">Masukkan Ulang Kata Sandi Baru</label>
-                  {{ form.new_password2|add_class:"form-control" }}
+                  <label for="exampleInputText1" class="form-label fw-bold">Nomor Penerima</label>
+                  {{ form.receiver_phone|add_class:"form-control" }}
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputText1" class="form-label fw-bold">Nama Provinsi</label>
+                  {{ form.province|add_class:"form-control" }}
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputText1" class="form-label fw-bold">Nama Kota/Kabupaten</label>
+                  {{ form.city|add_class:"form-control" }}
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputText1" class="form-label fw-bold">Nama Kecamatan</label>
+                  {{ form.district|add_class:"form-control" }}
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputText1" class="form-label fw-bold">Kode Pos</label>
+                  {{ form.zipcode|add_class:"form-control" }}
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputText1" class="form-label fw-bold">Alamat Lengkap</label>
+                  {{ form.full_address|add_class:"form-control" }}
                 </div>
                 {% if form.errors %}
                   <div class="alert alert-danger">
@@ -72,7 +98,7 @@
                       {% endfor %}
                   </div>
                 {% endif %}
-                <button type="submit" class="btn btn-primary">Ubah Kata Sandi</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
                 <a href="{% url 'profile' %}" class="btn btn-outline-primary">Batal</a>
               </form>
             </div>

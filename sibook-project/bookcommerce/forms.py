@@ -43,15 +43,15 @@ class AddressForm(forms.ModelForm):
             'label', 'receiver_name', 'receiver_phone', 'province', 'city', 'district', 'ward', 'zipcode', 'full_address'
         ]
         widgets = {
-            'label': forms.TextInput(attrs={'placeholder': 'Rumah, Kos, dll'}),
-            'receiver_name': forms.TextInput(attrs={'placeholder': 'Nama Penerima'}),
-            'receiver_phone': forms.TextInput(attrs={'placeholder': 'No. HP Penerima'}),
-            'province': forms.TextInput(attrs={'placeholder': 'Provinsi'}),
-            'city': forms.TextInput(attrs={'placeholder': 'Kota'}),
-            'district': forms.TextInput(attrs={'placeholder': 'Kecamatan'}),
-            'ward': forms.TextInput(attrs={'placeholder': 'Kelurahan'}),
-            'zipcode': forms.TextInput(attrs={'placeholder': 'Kode Pos'}),
-            'full_address': forms.Textarea(attrs={'placeholder': 'Alamat lengkap', 'rows': 3}),
+            'label': forms.TextInput(attrs={'placeholder': 'Rumah, Kos, dll', 'class': 'custom-placeholder'}),
+            'receiver_name': forms.TextInput(attrs={'placeholder': 'Nama Penerima', 'class': 'custom-placeholder'}),
+            'receiver_phone': forms.NumberInput(attrs={'placeholder': 'No. HP Penerima', 'class': 'custom-placeholder'}),
+            'province': forms.TextInput(attrs={'placeholder': 'Provinsi', 'class': 'custom-placeholder'}),
+            'city': forms.TextInput(attrs={'placeholder': 'Kota', 'class': 'custom-placeholder'}),
+            'district': forms.TextInput(attrs={'placeholder': 'Kecamatan', 'class': 'custom-placeholder'}),
+            'ward': forms.TextInput(attrs={'placeholder': 'Kelurahan', 'class': 'custom-placeholder'}),
+            'zipcode': forms.NumberInput(attrs={'placeholder': 'Kode Pos', 'class': 'custom-placeholder'}),
+            'full_address': forms.Textarea(attrs={'placeholder': 'Alamat lengkap', 'rows': 3, 'class': 'custom-placeholder'}),
         }
     
     def __init__(self, *args, **kwargs):
@@ -59,6 +59,14 @@ class AddressForm(forms.ModelForm):
         for field in self.fields.values():
             field.required = False
             field.label = False
+
+        self.fields['receiver_name'].required = True
+        self.fields['receiver_phone'].required = True
+        self.fields['province'].required = True
+        self.fields['city'].required = True
+        self.fields['district'].required = True
+        self.fields['zipcode'].required = True
+        self.fields['full_address'].required = True
 
 class ProfilePictureForm(forms.ModelForm):
     profile_picture = forms.ImageField(
@@ -85,6 +93,16 @@ class CustomPasswordChangeForm(PasswordChangeForm):
     old_password = forms.CharField(widget=forms.PasswordInput, help_text='')
     new_password1 = forms.CharField(widget=forms.PasswordInput, help_text='')
     new_password2 = forms.CharField(widget=forms.PasswordInput, help_text='')
+
+    def clean(self):
+        cleaned_data = super().clean()
+        old_password = cleaned_data.get('old_password')
+        new_password1 = cleaned_data.get('new_password1')
+        
+        if old_password and new_password1 and old_password == new_password1:
+            raise forms.ValidationError('Password baru tidak boleh sama dengan password lama.')
+        
+        return cleaned_data
 
 class ReviewForm(forms.ModelForm):
     class Meta:

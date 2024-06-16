@@ -12,6 +12,27 @@
             <p><strong>Alamat Pengiriman:</strong> {{ request.user.address.full_address }}</p>
             <p><strong>Kurir:</strong> {{ shipment }}</p>
             <p><strong>Metode Pembayaran:</strong> {{ payment }}</p>
+            <p><strong>Tujuan Pembayaran:</strong>
+                {% if payment.name == 'Mandiri Virtual Account' %}
+                    1234-5678-9101
+                {% elif payment.name == 'BCA Virtual Account' %}
+                    5678-9101-1234
+                {% elif payment.name == 'GoPay' %}
+                    081234567890
+                {% elif payment.name == 'OVO' %}
+                    081234567890
+                {% elif payment.name == 'Dana' %}
+                    081234567890
+                {% elif payment.name == 'ShopeePay' %}
+                    081234567890
+                {% elif payment.name == 'Paypal' %}
+                    paypal@domain.com
+                {% elif payment.name == 'BRI Virtual Account' %}
+                    9101-1234-5678
+                {% elif payment.name == 'BNI Virtual Account' %}
+                    1234-5678-9101
+                {% endif %}
+            </p>
         </div>
     </div>
 
@@ -42,7 +63,7 @@
         </div>
     </div>
 
-    <h4 class="mb-4">Mohon lakukan pembayaran</h4>
+    <h4 class="mb-4">Mohon lakukan pembayaran sebelum 24 jam</h4>
     <a href="{% url 'home' %}" class="btn btn-primary">Kembali ke halaman utama</a>
 </div>
 

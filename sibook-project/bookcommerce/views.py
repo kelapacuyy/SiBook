@@ -224,41 +224,19 @@ def delete_all_cart_items(request):
 
 @login_required
 def checkout(request):
-    book_id = None
+    try:
+        cart = Cart.objects.get(customer=request.user)
+        cart_items = cart.items.all()
+    except Cart.DoesNotExist:
+        cart_items = []
+
+    if not cart_items and not request.POST.get('book_id'):
+        messages.error(request, 'Keranjang belanja Anda kosong.')
+        return redirect('cart_detail')
+
     if request.method == 'POST':
         book_id = request.POST.get('book_id')
-        if book_id:
-            book = get_object_or_404(Book, id=book_id)
-        else:  
-            cart = get_object_or_404(Cart, customer=request.user)
-
-    shipments = Shipment.objects.all()
-    payments = Payment.objects.all()
-    cart = Cart.objects.get(customer=request.user)
-    book = Book.objects.get(id=book_id) if book_id else None
-
-    # Harga pengiriman yang dipilih
-    shipment_price = None
-    shipment_id = request.POST.get('shipment')
-    if shipment_id:
-        shipment = get_object_or_404(Shipment, id=shipment_id)
-        shipment_price = shipment.price
-
-    return render(request, 'bookcommerce/checkout.html', {
-        'shipments': shipments,
-        'payments': payments,
-        'cart_items': cart.items.all(),
-        'total_price': sum(item.book.price * item.quantity for item in cart.items.all()),
-        'book': book,
-        'shipment_price': shipment_price,
-    })
-
-
-@login_required
-def payment(request):
-    book_id = None
-    if request.method == 'POST':
-        book_id = request.POST.get('book_id')
+        book = get_object_or_404(Book, id=book_id) if book_id else None
         address_id = request.POST.get('address')
         shipment_id = request.POST.get('shipment')
         payment_id = request.POST.get('payment')
@@ -270,8 +248,7 @@ def payment(request):
         shipment = get_object_or_404(Shipment, id=shipment_id)
         payment = get_object_or_404(Payment, id=payment_id)
 
-        if book_id:
-            book = get_object_or_404(Book, id=book_id)
+        if book:
             order = Order.objects.create(
                 customer=request.user,
                 address=request.user.address,
@@ -279,27 +256,89 @@ def payment(request):
                 payment=payment
             )
             OrderItem.objects.create(order=order, book=book, quantity=1)
-        else:  
-            cart = get_object_or_404(Cart, customer=request.user)
+        else:
             order = Order.objects.create(
                 customer=request.user,
                 address=request.user.address,
                 shipment=shipment,
                 payment=payment
             )
-            for item in cart.items.all():
+            for item in cart_items:
                 OrderItem.objects.create(order=order, book=item.book, quantity=item.quantity)
-            cart.items.all().delete()  # Clear the cart
+            cart_items.delete()  # Clear the cart
 
         messages.success(request, "Order berhasil dibuat!")
-        book = Book.objects.get(id=book_id) if book_id else None
-        return render(request, 'bookcommerce/payment.html', {
-            'shipment': shipment,
-            'payment': payment,
-            'order_items': order.items.all(),
-            'total_price': sum(item.book.price * item.quantity for item in order.items.all()),
-            'book': book,
-        })
+        return redirect('payment')
+
+    shipments = Shipment.objects.all()
+    payments = Payment.objects.all()
+
+    context = {
+        'shipments': shipments,
+        'payments': payments,
+        'cart_items': cart_items,
+        'total_price': sum(item.book.price * item.quantity for item in cart_items),
+    }
+    return render(request, 'bookcommerce/checkout.html', context)
+
+@login_required
+def payment(request):
+    if request.method == 'POST':
+        book_id = request.POST.get('book_id')
+        address_id = request.POST.get('address')
+        shipment_id = request.POST.get('shipment')
+        payment_id = request.POST.get('payment')
+
+        if not address_id or not shipment_id or not payment_id:
+            messages.error(request, "Mohon lengkapi semua informasi!")
+            return redirect('checkout')
+
+        try:
+            shipment = get_object_or_404(Shipment, id=shipment_id)
+            payment = get_object_or_404(Payment, id=payment_id)
+
+            if book_id:
+                book = Book.objects.get(id=book_id)
+                order = Order.objects.create(
+                    customer=request.user,
+                    address=request.user.address,
+                    shipment=shipment,
+                    payment=payment
+                )
+                OrderItem.objects.create(order=order, book=book, quantity=1)
+            else:
+                cart = Cart.objects.get(customer=request.user)
+                order = Order.objects.create(
+                    customer=request.user,
+                    address=request.user.address,
+                    shipment=shipment,
+                    payment=payment
+                )
+                for item in cart.items.all():
+                    OrderItem.objects.create(order=order, book=item.book, quantity=item.quantity)
+                cart.items.all().delete()  # Clear the cart
+
+            messages.success(request, "Order berhasil dibuat!")
+            return render(request, 'bookcommerce/payment.html', {
+                'shipment': shipment,
+                'payment': payment,
+                'order_items': order.items.all(),
+                'total_price': sum(item.book.price * item.quantity for item in order.items.all()),
+                'book': book if book_id else None,
+            })
+
+        except (Shipment.DoesNotExist, Payment.DoesNotExist):
+            messages.error(request, "Metode pengiriman atau pembayaran tidak valid.")
+        except Book.DoesNotExist:
+            messages.error(request, "Buku yang dipilih tidak ditemukan.")
+        except Cart.DoesNotExist:
+            messages.error(request, "Keranjang belanja Anda kosong.")
+
+        return redirect('home')  # Arahkan kembali ke halaman utama jika terjadi kesalahan
+
+    # Handle GET request
+    return redirect('home')  # Arahkan kembali ke halaman utama jika bukan POST request
+
 
 @login_required
 def profile(request):
@@ -369,7 +408,7 @@ def change_password(request):
             messages.success(request, 'Password berhasil diubah.')
             return redirect('profile')
         else:
-            messages.error(request, 'Silakan perbaiki kesalahan di bawah.')
+            messages.error(request, 'Ubah password gagal!')
     else:
         form = CustomPasswordChangeForm(request.user)
     return render(request, 'bookcommerce/change_password.html', {'form': form})

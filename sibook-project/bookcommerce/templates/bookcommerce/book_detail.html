@@ -5,7 +5,11 @@
 {% block content %}
 <style>
     .rating {
-        display: inline-block;
+        display: flex;
+        width: min;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+        margin-right: auto;
     }
     
     .rating > input {
@@ -121,6 +125,7 @@
                 <div class="col-6 col-md-3">{{book.width}}</div>
             </div>
             <div class="row gap-3 mt-5">
+                {% if user.is_authenticated %}
                 <form class="col" action="{% url 'add_to_cart' book.id %}" method="POST">
                     {% csrf_token %}
                     <div class="input-group w-25 mb-3">
@@ -136,6 +141,20 @@
                         </div>
                     </div>
                 </form>
+                {% else %}
+                <div class="input-group w-25 mb-3">
+                    <span class="input-group-text"><i class="bi bi-book"></i></span>
+                    <input type="number" class="form-control" value="1" />
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <button class="btn btn-primary w-100" onclick="window.location.href='{% url 'login' %}'">Masukkan ke Keranjang</button>
+                    </div>
+                    <div class="col-6">
+                        <button class="btn btn-outline-primary w-100" onclick="window.location.href='{% url 'login' %}'">Beli Sekarang</button>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
         <div class="row my-5"></div>
@@ -170,12 +189,14 @@
             <h4>Tulis Rating dan Ulasan</h4>
             <form action="{% url 'bookcommerce-book-detail' book.id %}" method="POST">
                 {% csrf_token %}
-                <div class="rating mb-1">
-                    <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
-                    <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
-                    <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
-                    <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
-                    <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
+                <div>
+                    <div class="rating mb-1">
+                        <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
+                        <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
+                        <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
+                        <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
+                        <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+                    </div>
                 </div>
                 {{ review_form.content|add_class:"form-control" }}                               
                 <button class="btn btn-primary mt-3" type="submit" name="review_submit">Kirim Ulasan</button>
@@ -184,7 +205,6 @@
     {% endif %}
 
         <div class="col-12 mt-4">
-            <h3>Ulasan</h3>
             {% for review in reviews %}
                 <div class="row mt-3">
                     <div class="col-auto">

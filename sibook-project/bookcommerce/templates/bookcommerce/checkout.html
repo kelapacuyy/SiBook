@@ -1,0 +1,135 @@
+{% extends "bookcommerce/base.html" %}
+
+{% load static %} {% load mathfilters %} {% load humanize %}
+
+{% block content %}
+<div class="container">
+    <form action="{% url 'payment' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="address" value="{{ request.user.address.id }}">
+        
+        <div class="row gap-3">
+            <!-- Address Section -->
+            <div class="col-12 mt-3">
+                <h2 class="fw-bold mb-4">Pengiriman</h2>
+                <div class="col-12 p-4 rounded shadow-sm border">
+                    <h5 class="text-danger mb-3"><i class="bi bi-geo-alt-fill"></i> Alamat Pengiriman</h5>
+                    {% if not request.user.address %}
+                        <p class="h6 mb-2">{{ user.username }}</p>
+                        <a href="{% url 'create_address' %}" class="btn btn-outline-primary btn-sm mt-2">Tambah Alamat</a>
+                    {% else %}
+                        <p class="h6">{{ user.address.receiver_name }} - {{ user.address.receiver_phone }}</p>
+                        <p class="h6">{{ request.user.address.full_address }}</p>
+                        <a href="{% url 'update_address' user.address.id %}" class="btn btn-outline-primary btn-sm mt-2">Ubah Alamat</a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Shipment and Payment Section -->
+            <div class="col-12 mt-3">
+                <div class="row mb-4">
+                    <!-- Courier Options -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>Kurir</h2>
+                            </div>
+                            <div class="card-body">
+                                <select name="shipment" class="form-select" required>
+                                    {% for shipment in shipments %}
+                                        <option value="{{ shipment.id }}">{{ shipment.name }} - Rp0 (2 hari)</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Methods -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>Metode Pembayaran</h2>
+                            </div>
+                            <div class="card-body">
+                                <select name="payment" class="form-select" required>
+                                    {% for payment in payments %}
+                                        <option value="{{ payment.id }}">{{ payment.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Products Section -->
+            <div class="col-12">
+                <h2 class="fw-bold">Produk yang Dipesan</h2>
+            </div>
+            <div class="col-12 col-lg-7">
+                <div class="p-4 rounded shadow-sm border">
+                    {% if book %}
+                        <li>{{ book.title }} - 1 x {{ book.price }}</li>
+                        <input type="hidden" name="book_id" value="{{ book.id }}">
+                        <p>Total harga: {{ book.price }}</p>
+                    {% else %}
+                        {% if cart_items %}
+                            {% for item in cart_items %}
+                            <div class="row">
+                                <div class="col-2">
+                                    <img src="{{ item.book.cover_img.url }}" class="img-fluid" alt="{{ item.book.title }}" />
+                                </div>
+                                <div class="col">
+                                    <p class="fw-bold m-0 mb-1">{{ item.book.title }}</p>
+                                    <p class="m-0">Penulis: {{ item.book.author }}</p>
+                                    <p class="m-0">Berat: {{ item.book.weight|div:1000 }} kg</p>
+                                </div>
+                                <div class="col text-end mt-6">
+                                    <h6 class="m-0">Rp {{ item.book.price|intcomma }}</h6>
+                                    <form action="{% url 'update_cart_item' item.id %}" method="POST" class="mt-3 d-flex justify-content-end">
+                                        <div class="input-group input-group-sm mt-2">
+                                            <label class="input-group-text" for="inputGroupSelect01">Qty</label>
+                                            <input class="form-control" id="inputGroupSelect01" type="text" placeholder="{{ item.quantity }}" disabled>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <hr />
+                            {% endfor %}
+                        {% else %}
+                            <p>Keranjang Anda kosong.</p>
+                        {% endif %}
+                    {% endif %}
+                    
+                    <div class="row">
+                        <div class="col">
+                            <a href="{% url 'cart_detail' %}" class="btn btn-outline-danger"><i class="bi bi-arrow-left"></i> Batal</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-1 mb-4 g-3 align-items-center justify-content-center"></div>
+            </div>
+
+            <!-- Summary Section -->
+            {% if cart_items or book %}
+            <div class="col-12 col-lg">
+                <div class="row p-4 rounded shadow-sm border">
+                    {% with tax=total_price|div:100|floatformat:0 %}
+                    <div class="col-6">Subtotal:</div>
+                    <div class="col-6 text-end">Rp {{ total_price|intcomma }}</div>
+                    <div class="col-6">Pajak:</div>
+                    <div class="col-6 text-end text-success">+ Rp {{ tax|intcomma }}</div>
+                    <hr />
+                    <div class="col-6 h5 fw-bold">Total:</div>
+                    <div class="col-6 h5 text-end fw-bold">Rp {{ total_price|add:tax|intcomma }}</div>
+                    {% endwith %}
+                    <div class="col-12 mt-4">
+                        <button class="btn btn-success w-100" type="submit">Lakukan Pembayaran</button>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </form>
+</div>
+{% endblock %}
