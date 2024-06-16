@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, View, UpdateView, DeleteView
 from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash, authenticate, login
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse, reverse_lazy
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.db.models import Avg
 from .models import Author, Series, Book, Cart, CartItem, Order, OrderItem, Shipment, Payment, Address, Review
 from .forms import UserRegisterForm, UserLoginForm, AddressForm, ProfilePictureForm, CustomPasswordChangeForm, ReviewForm
@@ -151,6 +152,24 @@ class ReviewDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         review = self.get_object()
         book = review.book
         return reverse('bookcommerce-book-detail', args=[book.pk])
+
+@login_required
+@csrf_exempt
+def like_review(request, review_id):
+    review = get_object_or_404(Review, id=review_id)
+    if request.user in review.liked_by.all():
+        review.liked_by.remove(request.user)
+        review.like -= 1
+        review.save()
+        return JsonResponse({'likes': review.like, 'liked': False})
+    else:
+        review.liked_by.add(request.user)
+        review.like += 1
+        review.save()
+        return JsonResponse({'likes': review.like, 'liked': True})
+
+
+# Misc views
 
 class CartStaticView(View):
     def get(self, request):

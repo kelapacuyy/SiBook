@@ -43,6 +43,18 @@
     .rating:hover > input:checked ~ label:before {
         opacity: 0.4;
     }     
+
+    .like-btn {
+        border: none;
+        background: none;
+        color: inherit;
+        cursor: pointer;
+    }
+
+    .like-btn.liked {
+        color: blue;
+    }
+
 </style>
 
 <div class="container">
@@ -168,6 +180,7 @@
     </div>
     <hr />
 
+
     <div class="col">
         <h2 class="fw-bold">Ulasan dan Penilaian</h2>
         <div class="bg-body-secondary rounded p-4">
@@ -219,8 +232,8 @@
                         </div>
                         <p class="text-body-tertiary">{{ review.date_posted }}</p>
                         <p>{{ review.content }}</p>
-                        <button class="btn text-body-tertiary">
-                            <i class="bi bi-hand-thumbs-up-fill"></i> {{ review.like }}
+                        <button class="btn like-btn {% if user in review.liked_by.all %}liked{% endif %}" data-review-id="{{ review.id }}">
+                            <i class="bi bi-hand-thumbs-up-fill"></i> <span id="like-count-{{ review.id }}">{{ review.like }}</span>
                         </button>
                         {% if review.author == user %}
                             <a href="{% url 'bookcommerce-review-update' review.pk %}">Edit</a>
@@ -232,5 +245,33 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        document.querySelectorAll('.like-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const reviewId = this.dataset.reviewId;
+                const likeCountSpan = document.getElementById(`like-count-${reviewId}`);
+                
+                fetch(`/review/${reviewId}/like/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.liked) {
+                        this.classList.add('liked');
+                    } else {
+                        this.classList.remove('liked');
+                    }
+                    likeCountSpan.textContent = data.likes;
+                });
+            });
+        });
+    });
+</script>
+
 
 {% endblock content %}

@@ -141,6 +141,7 @@ class Review(models.Model):
     rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)], default=5)
     content = models.TextField()
     like = models.IntegerField(default=0)
+    liked_by = models.ManyToManyField(Customer, related_name='liked_reviews', blank=True)
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='reviews')
 
     def __str__(self):

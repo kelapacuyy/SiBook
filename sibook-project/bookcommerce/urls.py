@@ -1,6 +1,6 @@
 from django.urls import path, include
 from . import views
-from .views import BookListView, BookDetailView, add_to_cart, cart_detail, update_cart_item, delete_cart_item, delete_all_cart_items, checkout, payment, profile, order_history, create_address, update_address, change_password, search, SearchView, ReviewUpdateView, ReviewDeleteView
+from .views import BookListView, BookDetailView, add_to_cart, cart_detail, update_cart_item, delete_cart_item, delete_all_cart_items, checkout, payment, profile, order_history, create_address, update_address, change_password, search, SearchView, ReviewUpdateView, ReviewDeleteView, like_review
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -22,7 +22,9 @@ urlpatterns = [
     path('search/', search, name='search'),
     path('books/review/<int:pk>/update/', ReviewUpdateView.as_view(), name='bookcommerce-review-update'),
     path('books/review/<int:pk>/delete/', ReviewDeleteView.as_view(), name='bookcommerce-review-delete'),
+    path('review/<int:review_id>/like/', like_review, name='like_review'),
 ]
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
