@@ -1,4 +1,4 @@
-#!/home/k1nomi/Documents/other-projects/SiBook/sibook-project/venv/bin/python3
+#!/home/ghifar/Documents/other-projects/SiBook/sibook-project/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
