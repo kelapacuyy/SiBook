@@ -25,6 +25,7 @@ SiBook adalah toko buku online yang dirancang seperti situs e-commerce, khusus u
 
 1. Clone repository ke local
 ```
+git clone git clone https://github.com/kelapacuyy/SiBook
 cd SiBook
 ```
 
